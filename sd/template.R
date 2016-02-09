@@ -14,11 +14,11 @@
 # Simulation loop. 
 # For each slice of simulated time,
 
-   # Compute the values of all the flows, based on previous stock values.
+    # Compute the values of all the flows, based on previous stock values.
 
-   # Compute the values of all the derivatives of the stocks ("primes").
+    # Compute the values of all the derivatives of the stocks ("primes").
 
-   # Compute all the new stock values (including any derived stocks).
+    # Compute all the new stock values (including any derived stocks).
 
 
 # Plot and analyze.
