@@ -1,5 +1,6 @@
 
-# Template for System Dynamics simulation
+# Thermostat (Meadows ch.2) -- version 1.0
+# (one stock with competing balancing loops)
 # CPSC 420 -- spring 2016
 
 
