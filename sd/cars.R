@@ -1,7 +1,7 @@
 
-# Template for System Dynamics simulation
+# Meadows ch.2 Car dealership example (Fig. 29) -- version 1.0
+# no delays (perception, response, or delivery)
 # CPSC 420 -- spring 2016
-
 
 # Set up time. (delta.t and time vector).
 delta.t <- .1   # days
