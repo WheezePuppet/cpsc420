@@ -4,7 +4,7 @@
 # CPSC 420 -- spring 2016
 
 # Set up time. (delta.t and time vector).
-delta.t <- .1   # days
+delta.t <- 1   # days
 time <- seq(0,30,delta.t)
 
 # itot() and ttoi() functions (if desired).
