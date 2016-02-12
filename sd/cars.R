@@ -12,7 +12,7 @@ itot <- function(i) (i-1)*delta.t + 0
 ttoi <- function(t) (t-0)/delta.t + 1
 
 # Simulation parameters (inputs).
-customer.demand <- .3  # (cars/day)/car  (demand prop. to inventory)
+customer.demand <- .25  # (cars/day)/car  (demand prop. to inventory)
 stocking.factor <- 10  # cars/(cars/day)
 lot.size <- 200        # cars
 
