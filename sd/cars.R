@@ -1,6 +1,6 @@
 
-# Meadows ch.2 Car dealership example (Fig. 29) -- version 1.1
-# delivery delay only
+# Meadows ch.2 Car dealership example (Fig. 29) -- version 1.2
+# delivery and response delays
 # CPSC 420 -- spring 2016
 
 # Set up time. (delta.t and time vector).
@@ -22,6 +22,7 @@ sales <- vector()     # cars/day
 sales[1] <- 0
 
 delivery.delay <- 1   # days
+response.delay <- 1   # days
 
 # Stocks. (Create a vector and an initial condition for each.)
 inventory <- vector(length=length(time))
@@ -40,8 +41,7 @@ for (i in 2:length(time)) {
         min(lot.size, perceived.sales * stocking.factor)
     discrepancy <- inventory[i-1] - desired.inventory # pos = enough
 
-    # NO response delay.
-    orders[i] <- max(0,-discrepancy) / delta.t
+    orders[i] <- max(0,-discrepancy/(response.delay+1)) / delta.t
 
     deliveries <- orders[max(1,i-delivery.delay)]
 
