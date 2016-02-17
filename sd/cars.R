@@ -16,8 +16,10 @@ customer.demand <- .25  # (cars/day)/car  (demand prop. to inventory)
 stocking.factor <- 10  # cars/(cars/day)
 lot.size <- 200        # cars
 
-orders <- 0    # cars/day
-sales <- 0     # cars/day
+orders <- vector()    # cars/day
+orders[1] <- 0
+sales <- vector()     # cars/day
+sales[1] <- 0
 
 # Stocks. (Create a vector and an initial condition for each.)
 inventory <- vector(length=length(time))
@@ -29,21 +31,20 @@ for (i in 2:length(time)) {
 
     # Compute the values of all the flows, based on previous stock values.
 
-    sales <- customer.demand * inventory[i-1]
-    perceived.sales <- sales   # NO perception delay.
+    sales[i] <- customer.demand * inventory[i-1]
+    perceived.sales <- sales[i]   # NO perception delay.
 
     desired.inventory <- 
         min(lot.size, perceived.sales * stocking.factor)
     discrepancy <- inventory[i-1] - desired.inventory # pos = enough
 
     # NO response delay.
-    orders <- max(0,-discrepancy) / delta.t  # The less cool Stephen way
-#   orders <- abs(min(0,discrepancy)) # The COOOOOL Alex way
+    orders[i] <- max(0,-discrepancy) / delta.t
 
-    deliveries <- orders   # NO delivery delay.
+    deliveries <- orders[i]   # NO delivery delay.
 
     # Compute the values of all the derivatives of the stocks ("primes").
-    inventory.prime <- deliveries - sales
+    inventory.prime <- deliveries - sales[i]
 
     # Compute all the new stock values (including any derived stocks).
     inventory[i] <- inventory[i-1] + inventory.prime * delta.t
@@ -51,7 +52,10 @@ for (i in 2:length(time)) {
 }
 
 # Plot and analyze.
-all.values <- c(0,inventory)
+all.values <- c(0,inventory,orders,sales)
 plot(time,inventory,type="l",col="red",lwd=2,ylim=range(all.values),
     xlab="days",ylab="",main="The local car dealership")
-legend("bottomright",fill="red",legend="inventory")
+lines(time,orders,col="purple",lwd=2)
+lines(time,sales,col="darkgreen",lwd=2)
+legend("bottomright",fill=c("purple","red","darkgreen"),
+    legend=c("orders","inventory","sales"))
