@@ -1,6 +1,6 @@
 
-# Meadows ch.2 Car dealership example (Fig. 29) -- version 1.0
-# no delays (perception, response, or delivery)
+# Meadows ch.2 Car dealership example (Fig. 29) -- version 1.1
+# delivery delay only
 # CPSC 420 -- spring 2016
 
 # Set up time. (delta.t and time vector).
