@@ -21,6 +21,8 @@ orders[1] <- 0
 sales <- vector()     # cars/day
 sales[1] <- 0
 
+delivery.delay <- 1   # days
+
 # Stocks. (Create a vector and an initial condition for each.)
 inventory <- vector(length=length(time))
 inventory[1] <- 150
@@ -41,7 +43,7 @@ for (i in 2:length(time)) {
     # NO response delay.
     orders[i] <- max(0,-discrepancy) / delta.t
 
-    deliveries <- orders[i]   # NO delivery delay.
+    deliveries <- orders[max(1,i-delivery.delay)]
 
     # Compute the values of all the derivatives of the stocks ("primes").
     inventory.prime <- deliveries - sales[i]
