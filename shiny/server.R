@@ -8,6 +8,7 @@ source("../sd/contiga.R")
 source("../sd/interest.R")
 source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
+source("../sd/batsMice.R")
 
 shinyServer(function(input,output,session) {
 
@@ -169,4 +170,20 @@ shinyServer(function(input,output,session) {
             plot.cpsc(prev.cpsc.results)
         })
     }
+
+
+    ############## Bats and mice ###########################################
+
+    output$batsMiceTimePlot <- renderPlot({
+        sim.results <- bats.mice.sim(
+            bat.birth.rate=input$batBirthRate,
+            bat.death.rate=input$batDeathRate,
+            mouse.birth.rate=input$mouseBirthRate,
+            mouse.death.rate=input$mouseDeathRate,
+            nutrition.factor=input$nutritionFactor,
+            kill.ratio=input$killRatio,
+            sim.length=input$batMouseSimLength)
+        plot.bats.mice.time.plot(sim.results)
+    })
+
 })

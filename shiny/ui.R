@@ -7,7 +7,7 @@ shinyUI(fluidPage(
 
     titlePanel("CPSC 420 -- System Dynamics examples"),
 
-    tabsetPanel(selected="Bathtub",
+    tabsetPanel(selected="BatsMice",
         tabPanel("Bathtub",
             sidebarLayout(sidebarPanel(
                 numericInput("bathtubSimLength", "Simulation time (min)",
@@ -169,6 +169,45 @@ shinyUI(fluidPage(
             ),
             mainPanel(
                 plotOutput("cpscPlot")
+            ))
+        ),
+        tabPanel("BatsMice",
+            sidebarLayout(sidebarPanel(
+                numericInput("batMouseSimLength", "Simulation time (months)",
+                    value=120, min=0, step=1, width="40%"),
+                div(class="row",
+                    div(class="col-lg-6", 
+                        sliderInput("batBirthRate",
+                            "Bat birth rate",
+                            value=1.2, min=0, step=.1, max=3)
+                    ),
+                    div(class="col-lg-6", 
+                        sliderInput("mouseBirthRate",
+                            "Mouse birth rate",
+                            value=1.2, min=0, step=.1, max=3)
+                    )
+                ),
+                div(class="row",
+                    div(class="col-lg-6", 
+                        sliderInput("batDeathRate",
+                            "Bat death rate",
+                            value=1.5, min=0, step=.1, max=3)
+                    ),
+                    div(class="col-lg-6", 
+                        sliderInput("mouseDeathRate",
+                            "Mouse death rate",
+                            value=1.1, min=0, step=.1, max=3)
+                    )
+                ),
+                sliderInput("nutritionFactor",
+                    "Nutrition factor (bats/kill)",
+                    value=2, min=0, step=.1, max=5),
+                sliderInput("killRatio",
+                    "Kill ratio (kills/encounter)",
+                    value=.05, min=0, step=.05, max=1)
+            ),
+            mainPanel(
+                plotOutput("batsMiceTimePlot")
             ))
         )
     )
