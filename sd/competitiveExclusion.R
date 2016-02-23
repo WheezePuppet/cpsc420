@@ -19,6 +19,8 @@ investment.frac.company1 <- .3   # ($reinvested/$earned)/year
 investment.frac.company2 <- .3   # ($reinvested/$earned)/year
 depreciation.rate <- .1          # ($depreciated/$capital)/year
 economy.cc <- 10000              # $/year (in earnings) saturation point
+earnings.company1 <- 100
+earnings.company2 <- 100
 
 # Stocks. (Create a vector and an initial condition for each.)
 company1.capital <- vector(length=length(time))    # $
