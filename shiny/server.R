@@ -198,4 +198,17 @@ shinyServer(function(input,output,session) {
         plot.sir(sim.results)
     })
 
+    output$reproductiveNumber <- renderText({
+        R0 <- calculate.reproductive.number(input$infectionRate,
+            input$meanDiseaseDuration, input$initS)
+        if (R0 <= 1) {
+            R0.color <- "darkgreen"
+        } else {
+            R0.color <- "red"
+        }
+        paste("<div style=\"text-align:center;\">",
+            "Basic Reproductive Number: <span style=\"color:", R0.color,
+                ";font-weight:bold;\">", round(R0,2), "</span></div>")
+    })
+
 })

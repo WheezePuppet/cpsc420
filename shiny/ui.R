@@ -222,7 +222,8 @@ shinyUI(fluidPage(
                     value=2, min=0, step=1, max=20),
                 sliderInput("initS",
                     "Initial susceptible population (people)",
-                    value=780, min=0, step=10, max=2000)
+                    value=780, min=0, step=10, max=2000),
+                htmlOutput("reproductiveNumber")
             ),
             mainPanel(
                 plotOutput("sirPlot")

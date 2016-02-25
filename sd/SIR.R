@@ -54,6 +54,32 @@ sir.sim <- function(
 }
 
 
+# Assuming all contacts result in infection, then compute the basic
+# reproductive number given the rate of a disease's infection, the number of
+# days it lasts on average (before infected individual is either dead or no
+# longer susceptible) and the initial number of susceptibles in the
+# population.
+calculate.reproductive.number <- function(infection.rate,
+    mean.disease.duration, init.S) {
+
+    # We're assuming all contacts result in infections, so "transmission rate"
+    # (rate of contacts between S's and I's) is the same as "infection rate"
+    # (rate of new infections making S's turn into I's.)
+    contact.rate <- infection.rate
+
+    # k = contacts per day (of the first I) 
+    k <- contact.rate * init.S
+
+    # b = transmission rate -- how often a contact results in an infection
+    b <- 1
+    
+    # D = mean disease duration (days)
+    D <- mean.disease.duration
+
+    return(k*b*D)
+}
+    
+
 
 
 # Given the results of sir.sim(), plot the populations over time.
