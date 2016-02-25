@@ -9,6 +9,7 @@ source("../sd/interest.R")
 source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
+source("../sd/SIR.R")
 
 shinyServer(function(input,output,session) {
 
@@ -184,6 +185,17 @@ shinyServer(function(input,output,session) {
             kill.ratio=input$killRatio,
             sim.length=input$batMouseSimLength)
         plot.bats.mice.time.plot(sim.results)
+    })
+
+    ################### SIR ################################################
+
+    output$sirPlot <- renderPlot({
+        sim.results <- sir.sim(
+            infection.rate=input$infectionRate,
+            mean.disease.duration=input$meanDiseaseDuration,
+            init.S=input$initS,
+            sim.length=input$sirSimLength)
+        plot.sir(sim.results)
     })
 
 })

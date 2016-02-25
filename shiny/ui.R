@@ -7,7 +7,7 @@ shinyUI(fluidPage(
 
     titlePanel("CPSC 420 -- System Dynamics examples"),
 
-    tabsetPanel(selected="BatsMice",
+    tabsetPanel(selected="SIR",
         tabPanel("Bathtub",
             sidebarLayout(sidebarPanel(
                 numericInput("bathtubSimLength", "Simulation time (min)",
@@ -208,6 +208,24 @@ shinyUI(fluidPage(
             ),
             mainPanel(
                 plotOutput("batsMiceTimePlot")
+            ))
+        ),
+        tabPanel("SIR",
+            sidebarLayout(sidebarPanel(
+                numericInput("sirSimLength", "Simulation time (days)",
+                    value=30*1, min=0, step=1, width="40%"),
+                sliderInput("infectionRate",
+                    "Infection rate (1/(infectedPerson*day))",
+                    value=.002, min=0, step=.0005, max=.01),
+                sliderInput("meanDiseaseDuration",
+                    "Mean disease duration (days)",
+                    value=2, min=0, step=1, max=20),
+                sliderInput("initS",
+                    "Initial susceptible population (people)",
+                    value=780, min=0, step=10, max=2000)
+            ),
+            mainPanel(
+                plotOutput("sirPlot")
             ))
         )
     )
