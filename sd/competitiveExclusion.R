@@ -70,13 +70,13 @@ for (i in 2:length(time)) {
 all.vals <- c(company1.capital,company2.capital,profits.company1,
     profits.company2)
 plot(time, company1.capital, type="l", col="blue", lty="solid",
-    lwd=2, main="Competitive exclusion",
+    lwd=3, main="Competitive exclusion",
     xlab="year", ylab="$", ylim=range(all.vals))
-lines(time, company2.capital, type="l", col="green", lty="solid", lwd=2)
-lines(time, profits.company1, type="l", col="blue", lty="dashed", lwd=1)
-lines(time, profits.company2, type="l", col="green", lty="dashed", lwd=1)
-legend("topleft", lty=c(rep("solid","dashed",2)),
-                  lwd=c(rep(2,1),rep(2,1)),
+lines(time, company2.capital, type="l", col="green", lty="solid", lwd=3)
+lines(time, profits.company1, type="l", col="blue", lty="dashed", lwd=2)
+lines(time, profits.company2, type="l", col="green", lty="dashed", lwd=2)
+legend("topleft", lty=rep(c("solid","dashed"),2),
+                  lwd=rep(c(3,2),2),
     col=c(rep("blue",2),rep("green",2)), 
     legend=c("Company 1 capital","Company 2 capital",
                                  "Company 1 profits","Company 2 profits"))
