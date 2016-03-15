@@ -2,6 +2,9 @@
 # Conway's Game of Life -- version 1.0
 # CPSC 420 -- spring 2016
 
+library(doParallel)
+registerDoParallel(8)
+
 # Possible states of CA cells.
 EMPTY <- 0
 POP <- 1
@@ -11,47 +14,11 @@ height <- 30
 width <- 30
 num.gen <- 100
 
+NYC.END.ROW <- 15
+NYC.START.COL <- 15
 
-# A static starting configuration. 
-config <- matrix(c(
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-byrow=TRUE,nrow=height)
 
-# A random starting configuration.
-config <- matrix(rbinom(height*width,size=1,prob=.15))
-
-# Our system's state.
-da.loaf <- array(EMPTY, dim=c(height,width,num.gen))
-da.loaf[,,1] <- config
+prob <- .15
 
 
 # Return the number of populated neighbors of (row,col) in the current
@@ -123,31 +90,50 @@ plot.gen <- function(da.loaf,gen) {
 
 
 # Plot the starting configuration.
-plot.gen(da.loaf,1)
+#plot.gen(da.loaf,1)
+
 
 
 # Main loop. For each generation, compute and plot its grid.
-for (gen in 2:num.gen) {
+probs <- seq(0,1,.1)
 
-    for (row in 1:height) {
-        
-        for (col in 1:width) {
+num.trials <- 3
 
-            if ((was.just.alive(da.loaf,row,col,gen) && 
-                should.stay.alive(da.loaf,row,col,gen))  ||
-                (!was.just.alive(da.loaf,row,col,gen) && 
-                should.spawn(da.loaf,row,col,gen))) {
+results <- foreach (prob=probs, .combine=rbind) %dopar% {
 
-                da.loaf[row,col,gen] <- POP                
+    end.pops <- vector()
+    for (trial in 1:num.trials) {
+
+        # A random starting configuration.
+        config <- matrix(rbinom(height*width,size=1,prob=prob), 
+            nrow=height)
+
+        # Our system's state.
+        da.loaf <- array(EMPTY, dim=c(height,width,num.gen))
+        da.loaf[,,1] <- config
+
+        for (gen in 2:num.gen) {
+
+            for (row in 1:height) {
+                
+                for (col in 1:width) {
+
+                    if ((was.just.alive(da.loaf,row,col,gen) && 
+                        should.stay.alive(da.loaf,row,col,gen))  ||
+                        (!was.just.alive(da.loaf,row,col,gen) && 
+                        should.spawn(da.loaf,row,col,gen))) {
+
+                        da.loaf[row,col,gen] <- POP                
+                    }
+                }
             }
         }
+        end.pops <- c(end.pops,sum(da.loaf[,,num.gen]))
     }
-    plot.gen(da.loaf,gen)
+    return(data.frame(init.prob=prob,final.prob=mean(end.pops)))
 }
 
-
 # Plot post-mortem analysis.
-total.pops <- apply(da.loaf,3,sum)
-plot(1:num.gen,total.pops,type="l", main="Total population over time",
-    ylim=c(0,max(total.pops)))
+plot(results$init.prob, results$final.prob, type="l", 
+    main="Prob of initial cell pop vs. final pop count")
 
