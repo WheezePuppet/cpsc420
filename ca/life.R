@@ -72,33 +72,11 @@ should.spawn <- function(da.loaf,row,col,current.gen) {
 }
 
 # Plot the grid for the generation specified.
-plot.gen <- function(da.loaf,gen) {
-    xcoords <- vector()
-    ycoords <- vector()
-    for (row in 1:height) {
-        for (col in 1:width) {
-            if (da.loaf[row,col,gen] == POP) {
-                xcoords <- c(xcoords,col)
-                ycoords <- c(ycoords,height-row+1)
-            }
-        }
-    }
-    plot(xcoords,ycoords,pch=20,col="blue",ylim=c(0,height),xlim=c(0,width))
-}
 
 
 
-
-# Plot the starting configuration.
-#plot.gen(da.loaf,1)
-
-
-
-# Main loop. For each generation, compute and plot its grid.
 probs <- seq(0,1,.1)
-
 num.trials <- 3
-
 results <- foreach (prob=probs, .combine=rbind) %dopar% {
 
     end.pops <- vector()
