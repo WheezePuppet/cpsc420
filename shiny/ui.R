@@ -228,7 +228,7 @@ shinyUI(fluidPage(
             mainPanel(
                 plotOutput("sirPlot")
             ))
-        )
+        ),
     
     
          tabPanel("Zombie Apocalypse",
