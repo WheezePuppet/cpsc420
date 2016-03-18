@@ -10,6 +10,7 @@ source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
+source("../sd/zombie.R")
 
 shinyServer(function(input,output,session) {
 
