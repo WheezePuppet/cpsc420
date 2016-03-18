@@ -10,6 +10,7 @@ source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
+source("../sd/cowsTragedy.R")
 
 shinyServer(function(input,output,session) {
 
@@ -210,5 +211,16 @@ shinyServer(function(input,output,session) {
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
     })
-
+  ##################### Cows Tragedy of THe Commons ########################
+    
+    output$cowsTragedyPlot <- renderPlot({
+      sim.results <- cows.tragedy.sim(
+        sim.length=input$time,
+        farmers=input$farmersOnPasture,
+        init.cows=input$initCowsPerFarmer,
+        init.food=input$startingGrass,
+        grass.growth.rate=input$grassRegrowthRate,
+        decision.ratio=input$sustainabilityDecisionRatio)
+      plot.cows.tragedy.plot(sim.results)
+    })
 })
