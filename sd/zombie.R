@@ -20,7 +20,7 @@ zombie.sim <- function(dullness.rate = .003, #health/zombie
                        sim.time = 365 ) { #day
   # Set up time. (delta.t and time vector).
   delta.t <- 1   #days 
-  time <- seq(1, sim.time*4, delta.t)
+  time <- seq(1, sim.time, delta.t)
   # itot() and ttoi() functions (if desired).
   itot <- function(i) (i-1)*delta.t + 0
   ttoi <- function(t) (t-0)/delta.t + 1
