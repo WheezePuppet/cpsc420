@@ -1,4 +1,5 @@
-#Zombie apocalypse ammo cash 
+#Zombie apocalypse wall deffense 
+#One blade, four guards, four walls, lots of zombies
 #Biran Will 
 #Version 1
 #2-23-16
