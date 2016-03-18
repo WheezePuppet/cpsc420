@@ -229,6 +229,58 @@ shinyUI(fluidPage(
                 plotOutput("sirPlot")
             ))
         )
+    
+    
+         tabPanel("Zombie Apocalypse",
+           sidebarLayout(sidebarPanel(
+             sliderInput("dullnessRate", 
+                         "Rate at which Blade Dulls (healthPoints/day)",
+                         min=0, max=1, step=.001, value=.003),
+             sliderInput("zombieDamageRate", 
+                         "Zombie Damage Rate (healthPoints/day per Zombie)",
+                         min=0, max=100, step=.1, value=2),
+            
+             sliderInput("zombiesWall1", "Zombies Attacking Wall One",
+                         min=0, max=20, step=1, value=4),
+             sliderInput("guardOneKillRate", 
+                         "Guard One's Kill Rate",
+                         min=0, max=1, step=.1, value=.8),
+             sliderInput("wallOneRebuildRate", 
+                         "Rate at which wall one is rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=3),
+             sliderInput("zombiesWall2", "Zombies Attacking Wall Two",
+                         min=0, max=20, step=1, value=3),
+             sliderInput("guardTwoKillRate", 
+                         "Guard Two's Kill Rate",
+                         min=0, max=1, step=.1, value=.8),
+             sliderInput("wallTwoRebuildRate", 
+                         "Rate at which Wall Two is Rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=2),
+             sliderInput("zombiesWall3", "Zombies Attacking Wall three",
+                         min=0, max=20, step=1, value=4),
+             sliderInput("guardThreeKillRate", 
+                         "Guard Three's Kill Rate",
+                         min=0, max=1, step=.1, value=.8),
+             sliderInput("wallThreeRebuildRate", 
+                         "Rate at which Wall Three is Rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=4),
+             sliderInput("zombiesWall4", "Zombies Attacking Wall four",
+                         min=0, max=20, step=1, value=6),
+             sliderInput("guardFourKillRate", 
+                         "Guard Four's Kill Rate",
+                         min=0, max=1, step=.1, value=.5),
+             sliderInput("wallFourRebuildRate", 
+                         "Rate at which Wall Four is Rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=7),
+             numericInput("simLength", "Simulation time (days)",
+                         value=365*4, min=0, step=1, width="40%")
+           
+           ),
+           mainPanel(
+             plotOutput("zombiePlot")
+           ))
+         )
     )
+  
 
 ))
