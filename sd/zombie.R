@@ -3,21 +3,21 @@
 #Biran Will 
 #Version 1
 #2-23-16
-zombie.sim <- function(dullness.rate = .003, 
-                       damage.rate = 2, 
-                       walkers.per.day.wall1 = 4,
-                       kill.rate.wall1 = .8,  
-                       rebuild.rate.wall1 = 3,
-                       walkers.per.day.wall2 = 3, 
-                       kill.rate.wall2 = .8,  
-                       rebuild.rate.wall2 = 2, 
-                       walkers.per.day.wall3 = 4, 
-                       kill.rate.wall3 = .8,  
-                       rebuild.rate.wall3 = 4, 
-                       walkers.per.day.wall4 = 6,
-                       kill.rate.wall4 = .5,  
-                       rebuild.rate.wall4 = 7,
-                       sim.time = 365) {
+zombie.sim <- function(dullness.rate = .003, #health/zombie 
+                       damage.rate = 2, #health/day per zombie 
+                       walkers.per.day.wall1 = 4, #zombie/day 
+                       kill.rate.wall1 = .8,  #zombie/day
+                       rebuild.rate.wall1 = 3, #health/day
+                       walkers.per.day.wall2 = 3, #zombies/day
+                       kill.rate.wall2 = .8,  #zombie/day
+                       rebuild.rate.wall2 = 2, #health/day
+                       walkers.per.day.wall3 = 4, #zombie/day
+                       kill.rate.wall3 = .8,  #zombie/day
+                       rebuild.rate.wall3 = 4, #health/day
+                       walkers.per.day.wall4 = 6, #zombie/day
+                       kill.rate.wall4 = .5,  #zombie/day
+                       rebuild.rate.wall4 = 7, #health/day
+                       sim.time = 365 ) { #day
   # Set up time. (delta.t and time vector).
   delta.t <- 1   #days 
   time <- seq(1, sim.time*4, delta.t)
