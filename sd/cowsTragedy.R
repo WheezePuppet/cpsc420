@@ -11,15 +11,16 @@ cows.tragedy.sim <- function(
   
   delta.t <- 1
   time <- seq(0,sim.length,delta.t)
-  
+  #initials
   cattle <- vector(length=length(time))#Number of cattle on pasture
   cattle[1] <- init.cows*farmers
-  foods <- vector(length=length(time))#amount of available grass on pasture measured in amount of cows * cow intake
+  foods <- vector(length=length(time))#amount of available grass on pasture measured in number of 
+                                      #cows able to be supported for a week
   foods[1] <- init.food
-  sustainability <- vector(length=length(time))#how much the pasture can support. i.e. 1 = just enough cows, 2 = twice as many, 0.75 = too many cows
-
-  #initials
+  sustainability <- vector(length=length(time))#how much the pasture can support. 
+                                    #i.e. 1 = just enough cows, 2 = twice as many, 0.75 = too many cows
   sustainability[1] <- foods[1]/cattle[1]
+  
   for(i in 2:length(time)){
     sustainability[i] = foods[i-1]/cattle[i-1]
     if(sustainability[i] > decision.ratio){
@@ -45,7 +46,7 @@ plot.cows.tragedy.plot<-function(sim.results){
      ylim=c(min(all.values),max(all.values)),
      main="Tragedy of the Commons",
      xlab="weeks",
-     ylab="foods")
+     ylab="Food/Cows")
   lines(sim.results$time,sim.results$cows,col="blue",lwd=2)
   legend("topright",fill=c("green","blue"),legend=c("Grass","Cows"))
 }
