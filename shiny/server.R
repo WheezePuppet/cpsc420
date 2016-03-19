@@ -10,6 +10,7 @@ source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
+source("../sd/smuggling.R")
 
 shinyServer(function(input,output,session) {
 
@@ -210,5 +211,24 @@ shinyServer(function(input,output,session) {
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
     })
+    
+    ############## Han Solo Smuggling ###########################################
+    
+    output$plot.contraband.plot <- renderPlot({
+        sim.results <- han.solo.sim(
+          init.patrols=input$initPatrols,
+          init.contraband=input$initContraband,
+          demand=input$demand,
+          encounter.frequency=input$encounterFrequency,
+          sim.length=input$simLength,
+          contract.incentive=input$contractIncentive,
+          smuggle.rate=input$smuggleRate,
+          patrol.rate=input$patrolRate,
+          confiscation.ratio=input$confiscationRatio,
+          desired.shipments=input$desiredShipments
+        )
+        plot.contraband.plot(sim.results)
+    })
+    
 
 })
