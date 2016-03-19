@@ -232,29 +232,29 @@ shinyUI(fluidPage(
         tabPanel("Intergalactic Smugglers",
                  sidebarLayout(sidebarPanel(
                    numericInput("simLength", "Simulation time (Galactic Standard Days [GSD])",
-                                value=100, min=1, step=1, width="40%"),
+                                value=125, min=1, step=1, width="40%"),
                    div(class="row",
                        div(class="col-lg-6", 
                            sliderInput("initPatrols",
                                        "Initial number of Security Patrols",
-                                       value=50, min=0, step=1, max=100)
+                                       value=1, min=0, step=1, max=100)
                        ),
                        div(class="col-lg-6", 
                            sliderInput("initContraband",
                                        "Initial Number of Contraband Shipments",
-                                       value=50, min=0, step=1, max=100)
+                                       value=10, min=0, step=1, max=100)
                        )
                    ),
                    div(class="row",
                        div(class="col-lg-6", 
                            sliderInput("desiredShipments",
                                        "The Desired Number of Shipments the Black Market Wants",
-                                       value=50, min=0, step=1, max=100)
+                                       value=10, min=0, step=1, max=100)
                        ),
                        div(class="col-lg-6", 
                            sliderInput("demand",
                                        "Number of Credits Black Market will Pay per Shipment",
-                                       value=5000, min=0, step=100, max=1000)
+                                       value=100, min=0, step=100, max=1000)
                        )
                    ),
                    div(class="row",
@@ -266,18 +266,18 @@ shinyUI(fluidPage(
                        div(class="col-lg-6", 
                            sliderInput("patrolRate",
                                        "Security Level (Patrols / Shipment of Commodity)",
-                                       value=2, min=0, step=1, max=5)
+                                       value=.5, min=0, step=.1, max=5)
                        )
                    ),
                    sliderInput("confiscationRatio",
                                "Rate at which an Encounter Results in a Confiscation",
-                               value=.5, min=0, step=.01, max=1),
+                               value=.75, min=0, step=.01, max=1),
                    sliderInput("encounterFrequency",
                                "Encounter Frequency",
-                               value=.5, min=0, step=.01, max=1),
+                               value=.25, min=0, step=.01, max=1),
                    sliderInput("contractIncentive",
                                "New Smugglers per 1000 Credit Offered",
-                               value=5, min=0, step=1, max=10)
+                               value=.001, min=0, step=.001, max=.01)
                  ),
                  
                  mainPanel(

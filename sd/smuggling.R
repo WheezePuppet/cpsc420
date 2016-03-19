@@ -1,8 +1,5 @@
-# Shiflet 4.2 -- Lotka-Volterra predator/prey model
+#Alex Priest
 
-# Given parameters describing a bat/mouse habitat, return a data frame of the
-# two populations over time.
-#
 han.solo.sim <- function(
   init.patrols=100,  # Patrols
   init.contraband=75,    # Shipments
@@ -33,22 +30,23 @@ han.solo.sim <- function(
   # Simulation loop. 
   for (i in 2:length(time)) {
     
-    Smugglers[i] <- Contraband[i-1] * demand * contract.incentive / 1000 # Smugglers
+    Smugglers[i] <- Contraband[i-1] * demand * contract.incentive # Smugglers
     
     Patrols[i] <- Contraband[i-1] * patrol.rate # Patrols
     
     C.prime <- Smugglers[i] * smuggle.rate * delta.t - Patrols[i] * encounter.frequency * confiscation.ratio
     
-    demand <- demand * desired.shipments / Contraband[i-1]
+    demand = demand * desired.shipments / Contraband[i-1]
     
-    Contraband[i] <- Contraband[i-1] + C.prime * delta.t
+    Contraband[i] = Contraband[i-1] + C.prime * delta.t
     }
   return(data.frame(time=time,contraband=Contraband))
 }
 
-# Given the results of bats.mice.sim(), plot the populations over time.
+# Given the results, plot the populations over time.
 plot.contraband.plot <- function(sim.results) {
   all.vals <- c(sim.results$contraband,0)
-  plot(sim.results$time,sim.results$contraband/1000,type="l",col="black",lwd=2,
-       ylim=range(all.vals), xlab="time (GSD)", ylab="Thousands of Contraband Shipments", main="Looks Like We Got Ourselves a Smuggler!")
+  plot(sim.results$time,sim.results$contraband,type="l",col="black",lwd=2,
+       ylim=range(all.vals), xlab="time (days)", main="Looks Like We Got Ourselves a Smuggler!")
+  # legend("topleft",fill=c("black","red"),legend=c("mice","bats"))
 }
