@@ -10,6 +10,7 @@ source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
+source("../sd/toyWars.R")
 
 shinyServer(function(input,output,session) {
 
@@ -176,15 +177,15 @@ shinyServer(function(input,output,session) {
     ############## Bats and mice ###########################################
 
     output$batsMiceTimePlot <- renderPlot({
-        sim.results <- bats.mice.sim(
-            bat.birth.rate=input$batBirthRate,
-            bat.death.rate=input$batDeathRate,
-            mouse.birth.rate=input$mouseBirthRate,
-            mouse.death.rate=input$mouseDeathRate,
-            nutrition.factor=input$nutritionFactor,
-            kill.ratio=input$killRatio,
-            sim.length=input$batMouseSimLength)
-        plot.bats.mice.time.plot(sim.results)
+      sim.results <- bats.mice.sim(
+        bat.birth.rate=input$batBirthRate,
+        bat.death.rate=input$batDeathRate,
+        mouse.birth.rate=input$mouseBirthRate,
+        mouse.death.rate=input$mouseDeathRate,
+        nutrition.factor=input$nutritionFactor,
+        kill.ratio=input$killRatio,
+        sim.length=input$batMouseSimLength)
+      plot.bats.mice.time.plot(sim.results)
     })
 
     ################### SIR ################################################
@@ -209,6 +210,24 @@ shinyServer(function(input,output,session) {
         paste("<div style=\"text-align:center;\">",
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
+    })
+    
+    ############## Toy Wars ###########################################
+    
+    output$toysTimePlot <- renderPlot({
+      toy.results <- toy.sim(
+        sim.length=input$toySimLength, 
+        brag.rate.child1=input$Child1BragRate,
+        brag.rate.child2=input$Child2BragRate,
+        win.rate.child1=input$Child1WinRate,
+        win.rate.child2=input$Child2WinRate, 
+        allowance=input$childAllowance,
+        cost.of.toy=input$toyCost,
+        child1.start=input$Child1Start,
+        child2.start=input$Child2Start,
+        piggy1.start=input$Child1Piggy,
+        piggy2.start=input$Child2Piggy)
+      plot.toys.time.plot(toy.results)
     })
 
 })

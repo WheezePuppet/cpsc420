@@ -228,7 +228,71 @@ shinyUI(fluidPage(
             mainPanel(
                 plotOutput("sirPlot")
             ))
+        ),
+        tabPanel("ToyWars",
+                 sidebarLayout(sidebarPanel(
+                   sliderInput("toySimLength", "Simulation time (weeks)",
+                               value=2, min=0, step=1, max=52),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("Child1BragRate",
+                                       "Child1 Brag Rate",
+                                       value=0, min=0, step=.1, max=3)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("Child2BragRate",
+                                       "Child2 Brag Rate",
+                                       value=0, min=0, step=.1, max=3)
+                       )
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("Child1WinRate",
+                                       "Child1's desired percentage Above Child2",
+                                       value=0, min=0, step=.1, max=3)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("Child2WinRate",
+                                       "Child2's desired percentage Above Child1",
+                                       value=0, min=0, step=.1, max=3)
+                       )
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("Child1Piggy",
+                                       "Child1 Piggy Bank ($)",
+                                       value=20, min=0, step=1, max=100)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("Child2Piggy",
+                                       "Child2 Piggy Bank ($)",
+                                       value=20, min=0, step=1, max=100)
+                       )
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("Child1Start",
+                                       "Child1 Toys to Start",
+                                       value=10, min=0, step=1, max=100)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("Child2Start",
+                                       "Child2 Toys to Start",
+                                       value=5, min=0, step=1, max=100)
+                       )
+                   ),
+                   sliderInput("childAllowance",
+                               "Allowance ($/week)",
+                               value=10, min=0, step=1, max=50),
+                   sliderInput("toyCost",
+                               "Cost of a Toy ($/toy)",
+                               value=5, min=0, step=1, max=100)
+                 ),
+                 mainPanel(
+                   plotOutput("toysTimePlot")
+                 ))
         )
     )
 
 ))
+
