@@ -11,6 +11,7 @@ source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
 source("../sd/toyWars.R")
+source("../sd/cows.R")
 
 shinyServer(function(input,output,session) {
 
@@ -211,11 +212,32 @@ shinyServer(function(input,output,session) {
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
     })
-    
-    ############## Toy Wars ###########################################
-    
+
+	################### Cows ###########################################
+	output$Plot <- renderPlot({
+		sim.results <- cows.sim(
+			del=input$deltat,
+	      		acow=input$Acow,
+	      		bcow=input$Bcow,
+			time=input$time,
+	      		ae=input$Aearnings,
+	      		be=input$Bearnings,
+	      		gras=input$grass,
+	      		cow.eat.rate=input$coweatrate,
+	      		grass.growth.rate=input$grassgrowth,
+	      		cow.cost <- input$cowcost,
+	      		A.reinvestment <- input$a,
+	      		B.reinvestment <- input$b,
+	      		cow.profit <- input$profit,
+	      		blades.per.cow <- input$blades,
+	      		birth=input$birth)
+		plot.cows.sim(sim.results)
+	})
+
+
+	############################### Toy Wars ###########################################
     output$toysTimePlot <- renderPlot({
-      toy.results <- toy.sim(
+      	toy.results <- toy.sim(
         sim.length=input$toySimLength, 
         brag.rate.child1=input$Child1BragRate,
         brag.rate.child2=input$Child2BragRate,

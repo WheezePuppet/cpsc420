@@ -229,21 +229,55 @@ shinyUI(fluidPage(
                 plotOutput("sirPlot")
             ))
         ),
+
+	tabPanel("Cows",
+		sidebarLayout(sidebarPanel(
+			numericInput("time", label="Time (days)", value=100),
+			numericInput("grass", label="Farmer A's Inital cows", value=25),
+      			numericInput("Bcow", label="Farmer B's Inital cows", value=35),
+      			numericInput("Aearnings", label="Farmer A's Inital money", value=100),
+      			numericInput("Bearnings", label="Farmer B's Inital money", value=100),
+      			sliderInput("grass", label="Initial Blades of Grass in the Pasture",
+                  		min = 800, max= 5000, value=1000),
+      			sliderInput("coweatrate", label="Cow Eating Rate (Blade of Grass/Cow/Day)",
+                  		min = 0, max= 0.5, value=0.25),
+      			sliderInput("grassgrowth", label="Grass Growth Rate (Blade of Grass/Day/Blade of Grass)",
+                  		min = 0, max= 0.1, value=0.01),
+      			sliderInput("a", label="Farmer A Reinvestment (dollars/dollar)",
+                  		min = 0, max= 1, value=0.15),
+      			sliderInput("b", label="Farmer B Reinvestment (Dollars/Dollar)",
+                  		min = 0, max= 1, value=0.15),
+     			numericInput("cowcost", label="Cost per Cow (Dollars)", value=15),
+      			numericInput("profit", label="Profit per Cow (Dollars/Cow/Day)",
+                		value=1),
+      			numericInput("blades", label="Blades of Grass Consumed (Blades of Grass/Cow/Day)",
+                		value=6),
+      			selectInput("birth", label="Cow births (Cows/Day)", choices=list("None" = 0,
+                                                            "One" = 1,
+                                                            "Two" = 2,
+                                                            "Three" = 3)),
+      			numericInput("y", label="y-Axis Max", value=1000)
+      
+		),
+      		mainPanel(
+       	 		plotOutput("Plot")
+     		))
+	),
+
         tabPanel("ToyWars",
-                 sidebarLayout(sidebarPanel(
-                   sliderInput("toySimLength", "Simulation time (weeks)",
-                               value=2, min=0, step=1, max=52),
-                   div(class="row",
-                       div(class="col-lg-6", 
-                           sliderInput("Child1BragRate",
-                                       "Child1 Brag Rate",
-                                       value=0, min=0, step=.1, max=3)
-                       ),
-                       div(class="col-lg-6", 
+                sidebarLayout(sidebarPanel(
+       			sliderInput("toySimLength", "Simulation time (weeks)", 
+				value=2, min=0, step=1, max=52), div(class="row",
+                       		div(class="col-lg-6", 
+                        sliderInput("Child1BragRate",
+                                "Child1 Brag Rate",
+                                value=0, min=0, step=.1, max=3)
+                       	),
+                       	div(class="col-lg-6", 
                            sliderInput("Child2BragRate",
                                        "Child2 Brag Rate",
                                        value=0, min=0, step=.1, max=3)
-                       )
+                       	)
                    ),
                    div(class="row",
                        div(class="col-lg-6", 
