@@ -3,7 +3,8 @@
 cows.sim <- function(del=1, acow=25, bcow=35, length=100, ae= 100, be=100, blade=1000,cow.eat.rate=.25, 
 	grass.growth.rate=.01, cow.cost=15, A.reinvestment=.15, B.reinvestment=.15,cow.profit=1, blades.per.cow=6, birth=0,
 	y=1000) {
-  vec <- seq(1,length, by=as.numeric(del))
+  delta=del
+  num <- seq(1,length, by=as.numeric(del))
 	acows <- vector(length=length(num))
 	acows[1] <- acow
 	bcows <- vector(length=length(num))
@@ -17,7 +18,7 @@ cows.sim <- function(del=1, acow=25, bcow=35, length=100, ae= 100, be=100, blade
 	blades <- vector(length=length(num))
 	blades[1] <- blade
 	cow.birth <- as.numeric(birth)
-	for(i in 2:length(vec)){
+	for(i in 2:length(num)){
 	  grass.growth <- grass.growth.rate * blades[i-1]         # blades per day
 	  grass.feeding <- cow.eat.rate * total[i-1]              # blades per day
 	  A.milking <- cow.profit * acows[i-1]                    # dollars/day
@@ -75,7 +76,7 @@ cows.sim <- function(del=1, acow=25, bcow=35, length=100, ae= 100, be=100, blade
 	  total[i] <- trunc(acows[i] + bcows[i])
 	}
 	yaxis=max
-	return(data.frame(time=vec, acow=acows, bcow=bcows, amoney=aearn, bmoney=bearn, grass=blades))
+	return(data.frame(time=num, acow=acows, bcow=bcows, amoney=aearn, bmoney=bearn, grass=blades))
 
 }
 
