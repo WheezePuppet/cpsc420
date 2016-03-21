@@ -217,12 +217,12 @@ shinyServer(function(input,output,session) {
 	output$Plot <- renderPlot({
 		sim.results <- cows.sim(
 			del=input$deltat,
-	      		acow=input$Acow,
-	      		bcow=input$Bcow,
-			time=input$time,
+	      		acow=input$acow,
+	      		bcow=input$bcow,
+			      length=input$time,
 	      		ae=input$Aearnings,
 	      		be=input$Bearnings,
-	      		gras=input$grass,
+	      		blade=input$grass,
 	      		cow.eat.rate=input$coweatrate,
 	      		grass.growth.rate=input$grassgrowth,
 	      		cow.cost <- input$cowcost,
@@ -231,7 +231,7 @@ shinyServer(function(input,output,session) {
 	      		cow.profit <- input$profit,
 	      		blades.per.cow <- input$blades,
 	      		birth=input$birth)
-		plot.cows.sim(sim.results)
+		plot.cows.sim(sim.results, input$y)
 	})
 
 

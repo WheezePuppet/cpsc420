@@ -1,11 +1,9 @@
 #Hannah Zontine
 
-cows.sim <- function(del=1, acow=25, bcow=35, time=100, ae= 100, be=100, gras=1000,cow.eat.rate=.25, 
+cows.sim <- function(del=1, acow=25, bcow=35, length=100, ae= 100, be=100, blade=1000,cow.eat.rate=.25, 
 	grass.growth.rate=.01, cow.cost=15, A.reinvestment=.15, B.reinvestment=.15,cow.profit=1, blades.per.cow=6, birth=0,
-	max=1000) {
-
-	delta <- del
-	vec <- seq(1, time, delta)
+	y=1000) {
+  vec <- seq(1,length, by=as.numeric(del))
 	acows <- vector(length=length(num))
 	acows[1] <- acow
 	bcows <- vector(length=length(num))
@@ -17,7 +15,7 @@ cows.sim <- function(del=1, acow=25, bcow=35, time=100, ae= 100, be=100, gras=10
 	bearn <- vector(length=length(num))
 	bearn[1] <- be
 	blades <- vector(length=length(num))
-	blades[1] <- gras
+	blades[1] <- blade
 	cow.birth <- as.numeric(birth)
 	for(i in 2:length(vec)){
 	  grass.growth <- grass.growth.rate * blades[i-1]         # blades per day
@@ -31,7 +29,7 @@ cows.sim <- function(del=1, acow=25, bcow=35, time=100, ae= 100, be=100, gras=10
 	  blades.of.grass.prime <- grass.growth - grass.feeding
 	  A.earnings.prime <- A.milking - A.cow.spending    
 	  B.earnings.prime <- B.milking - B.cow.spending
-	  if((blades.per.cow * total[i-1]) > blades[i-1]){
+	  if(is.na(blades[i-1]) <= is.na(blades.per.cow * total[i-1])){
 	    numb <- (blades.per.cow * total[i-1]) - blades[i-1]
 	    death.prime <- numb /blades.per.cow / 2
 	    if(acows[i-1] < 1){
@@ -81,13 +79,13 @@ cows.sim <- function(del=1, acow=25, bcow=35, time=100, ae= 100, be=100, gras=10
 
 }
 
-plot.cows.sim <- function(sim.results){
-	plot(sim.results$time, sim.results$acows, type="l", col="cadetblue3",lwd=2, ylim=c(0,yaxis), ylab="", xlab="Days")
-        lines(sim.results$time, sim.results$bcows, col="darkorchid3",lwd=2)
-        lines(sim.results$time, sim.results$grass, col="green",lwd=2)
-        lines(sim.results$time, sim.results$amoney,col="cadetblue3",lwd=2, lty=2)
-        lines(sim.results$time, sim.results$bmoney, col="darkorchid2",lwd=2, lty=2)
-        legend("topright",legend=c("Farmer A's Cows","Farmer B's Cows", "Blades of Grass", "Farmer A's profit", "Farmer B's profit"),
+plot.cows.sim <- function(sim.results, yaxis){
+	plot(sim.results$time, sim.results$acow, type="l", col="cadetblue3",lwd=2, ylim=c(0,yaxis), ylab="", xlab="Days")
+  lines(sim.results$time, sim.results$bcow, col="darkorchid3",lwd=2)
+  lines(sim.results$time, sim.results$grass, col="green",lwd=2)
+  lines(sim.results$time, sim.results$amoney,col="cadetblue3",lwd=2, lty=2)
+  lines(sim.results$time, sim.results$bmoney, col="darkorchid2",lwd=2, lty=2)
+  legend("topright",legend=c("Farmer A's Cows","Farmer B's Cows", "Blades of Grass", "Farmer A's profit", "Farmer B's profit"),
              fill=c("cadetblue3", "darkorchid3", "green", "cadetblue3", "darkorchid3"), cex=1, lty=c(0,0,0,2,2))
 }
 
