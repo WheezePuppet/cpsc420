@@ -13,6 +13,7 @@ source("../sd/SIR.R")
 source("../sd/toyWars.R")
 source("../sd/cows.R")
 source("../sd/commonGoodShiny-elias.R")
+source("../sd/cowsTragedy.R")
 
 shinyServer(function(input,output,session) {
 
@@ -266,4 +267,16 @@ shinyServer(function(input,output,session) {
       plot.common.good(sim.results)
     })
     
+  ##################### Cows Tragedy of THe Commons ########################
+    
+    output$cowsTragedyPlot <- renderPlot({
+      sim.results <- cows.tragedy.sim(
+        sim.length=input$time,
+        farmers=input$farmersOnPasture,
+        init.cows=input$initCowsPerFarmer,
+        init.food=input$startingGrass,
+        grass.growth.rate=input$grassRegrowthRate,
+        decision.ratio=input$sustainabilityDecisionRatio)
+      plot.cows.tragedy.plot(sim.results)
+    })
 })

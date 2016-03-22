@@ -264,6 +264,29 @@ shinyUI(fluidPage(
        	 		plotOutput("Plot")
      		))
 	),
+        tabPanel("Cows (Thomas)",
+                 sidebarLayout(sidebarPanel(
+                   numericInput("time", "Simulation time (weeks)",
+                                value=50, min=0, step=1, width="40%"),
+                   sliderInput("farmersOnPasture", "Farmers using the pasture",
+                               min=1, max=100, step=1, value=10),
+                   sliderInput("initCowsPerFarmer", 
+                               "Initial Cows on pasture (per farmer)",
+                               min=1, max=10, step=1, value=2),
+                   sliderInput("startingGrass", 
+                               "Initial Grass on pasture (1 = 1 cow food week)",
+                               min=100, max=5000, step=10, value=500),
+                   sliderInput("grassRegrowthRate", 
+                               "Rate at which grass grows back",
+                               min=0, max=1, step=.01, value=.2),
+                   sliderInput("sustainabilityDecisionRatio", 
+                               "Sustainability decision ratio for farmers",
+                               min=0, max=5, step=1, value=3)
+                 ),
+                 mainPanel(
+                   plotOutput("cowsTragedyPlot")
+                 ))
+        ),
 
         tabPanel("ToyWars (Ruth)",
                 sidebarLayout(sidebarPanel(
@@ -341,6 +364,8 @@ shinyUI(fluidPage(
                      plotOutput("commonGoodPlot")
                    ))
         )
+        
+    )
 
-)))
+))
 
