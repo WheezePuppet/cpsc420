@@ -14,6 +14,7 @@ source("../sd/toyWars.R")
 source("../sd/cows.R")
 source("../sd/commonGoodShiny-elias.R")
 source("../sd/cowsTragedy.R")
+source("../sd/zombie.R")
 
 shinyServer(function(input,output,session) {
 
@@ -215,6 +216,27 @@ shinyServer(function(input,output,session) {
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
     })
+  
+  output$zombiePlot <- renderPlot({
+    results <- zombie.sim(
+      dullness.rate = input$dullnessRate, 
+      damage.rate = input$zombieDamageRate,
+      walkers.per.day.wall1 = input$zombiesWall1,
+      kill.rate.wall1 = input$guardOneKillRate,  
+      rebuild.rate.wall1 = input$wallOneRebuildRate,
+      walkers.per.day.wall2 = input$zombiesWall2, 
+      kill.rate.wall2 = input$guardTwoKillRate,  
+      rebuild.rate.wall2 = input$wallTwoRebuildRate, 
+      walkers.per.day.wall3 = input$zombiesWall3,
+      kill.rate.wall3 = input$guardThreeKillRate,  
+      rebuild.rate.wall3 = input$wallThreeRebuildRate, 
+      walkers.per.day.wall4 = input$zombiesWall4,
+      kill.rate.wall4 = input$guardFourKillRate,  
+      rebuild.rate.wall4 = input$wallFourRebuildRate,
+      sim.time = input$simLength)
+    plot.zombie(results)
+    #plot.zombie.kills(results)
+  })
 
 	################### Cows ###########################################
 	output$Plot <- renderPlot({
