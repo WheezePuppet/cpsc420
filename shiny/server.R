@@ -10,6 +10,7 @@ source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
+source("../sd/escalation.R")
 
 shinyServer(function(input,output,session) {
 
@@ -210,5 +211,39 @@ shinyServer(function(input,output,session) {
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
     })
+
+    ################# escalation ############################################
+    observeEvent(input$runEscalationSim,
+        {
+            prev.escalation.results <<- NULL
+            output$escalationPlot <- renderPlot({
+                run.and.plot.escalation()
+            })
+        })
+
+        observeEvent(input$contEscalationSim,
+        {
+            output$escalationPlot <- renderPlot({
+                run.and.plot.escalation()
+            })
+        })
+
+        run.and.plot.escalation <- function() {
+            isolate({
+                prev.escalation.results <<- 
+                    escalation.sim(usa.perception.bias=input$usaPerceptionBias,
+                        ussr.perception.bias=input$ussrPerceptionBias,
+                        usa.desired.advantage=input$usaDesiredAdvantage,
+                        ussr.desired.advantage=input$ussrDesiredAdvantage,
+                        usa.correction.period=input$usaCorrectionPeriod,
+                        ussr.correction.period=input$ussrCorrectionPeriod,
+                        sim.length=input$escalationLength,
+                        prev.results=prev.escalation.results)
+                plot.escalation(prev.escalation.results)
+            })
+    }
+
+
+
 
 })

@@ -228,7 +228,40 @@ shinyUI(fluidPage(
             mainPanel(
                 plotOutput("sirPlot")
             ))
+        ),       
+        tabPanel("Escalation",
+            sidebarLayout(sidebarPanel(
+                numericInput("escalationLength", "Simulation time(years)",
+                    value=20, min=1, step=1, width="40%"),
+                div(class="container-fluid",
+                    div(class="row",
+                        div(class="col-lg-6", 
+                            actionButton("runEscalationSim",label="Start/restart")),
+                        div(class="col-lg-6", 
+                            actionButton("contEscalationSim",label="Continue"))
+                    )
+                ),
+                div(
+                    h4("Sim parameters"),
+                    sliderInput("usaPerceptionBias", "USA overestimation of USSR stockpile",
+                        min=0, max=1, step=.05, value=.2),
+                    sliderInput("ussrPerceptionBias", "USSR overestimation of USA stockpile",
+                        min=0, max=1, step=.05, value=.2),
+                    sliderInput("usaDesiredAdvantage", "USA desired advantage",
+                        min=0, max=5, step=.05, value=.2),
+                    sliderInput("ussrDesiredAdvantage", "USSR desired advantage",
+                        min=0, max=5, step=.05, value=.2),
+                    sliderInput("usaCorrectionPeriod", "USA target correction period (years)",
+                        min=0, max=5, step=.05, value=1),
+                    sliderInput("ussrCorrectionPeriod", "USSR target correction period (years)",
+                        min=0, max=5, step=.05, value=1)
+                )
+            ),
+            mainPanel(
+                plotOutput("escalationPlot")
+            ))
         )
+
     )
 
 ))
