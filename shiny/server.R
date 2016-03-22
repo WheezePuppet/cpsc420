@@ -12,10 +12,12 @@ source("../sd/batsMice.R")
 source("../sd/SIR.R")
 source("../sd/toyWars.R")
 source("../sd/cows.R")
+source("../sd/commonGoodShiny-elias.R")
 
 shinyServer(function(input,output,session) {
 
-    ############# Bathtub ###################################################
+  
+  ############# Bathtub ###################################################
 
     output$bathtubWaterLevelPlot <- renderPlot({
         if (is.null(input$faucetOnOff)) {
@@ -252,4 +254,16 @@ shinyServer(function(input,output,session) {
       plot.toys.time.plot(toy.results)
     })
 
+    
+    ############ Common Good Email - ELias Ingea ##########################################
+    
+    output$commonGoodPlot <- renderPlot({
+      sim.results <- common.sim(
+        spam.percentage=input$spamPercentage, 
+        regen.rate=input$inflowRate, 
+        rate.of.use=input$outflowRate, 
+        sim.length=input$emailsSimLength)
+      plot.common.good(sim.results)
+    })
+    
 })

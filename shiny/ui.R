@@ -326,8 +326,21 @@ shinyUI(fluidPage(
                  mainPanel(
                    plotOutput("toysTimePlot")
                  ))
+        ),
+        tabPanel("Email Common (Elias)", 
+                 sidebarLayout(sidebarPanel(
+                   numericInput("emailsSimLength", "Simulation time (days)", 
+                                value=100, min=0, step=1, width="40%"), 
+                   sliderInput("spamPercentage", "Percent Spam Emails Make up (spam emails/total emails)", 
+                               min=0, max=1, step=0.1, value=0.8), 
+                   sliderInput("inflowRate", "Rate of Non-Spam emails ((email/day)/email)", 
+                               min=0, max=1, step=0.01, value=0.05), 
+                   sliderInput("outflowRate", "Rate of Spam emails ((email/day)/email)", 
+                               min = 0, max=1, step=0.01, val=0.04)), 
+                   mainPanel(
+                     plotOutput("commonGoodPlot")
+                   ))
         )
-    )
 
-))
+)))
 
