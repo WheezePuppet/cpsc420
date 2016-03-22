@@ -230,7 +230,7 @@ shinyUI(fluidPage(
             ))
         ),
 
-	tabPanel("Cows",
+	tabPanel("Cows (Hannah)",
 		sidebarLayout(sidebarPanel(
 		  numericInput("deltat", label="Delta T", value=1),
 			numericInput("time", label="Time (days)", value=100),
@@ -265,7 +265,7 @@ shinyUI(fluidPage(
      		))
 	),
 
-        tabPanel("ToyWars",
+        tabPanel("ToyWars (Ruth)",
                 sidebarLayout(sidebarPanel(
        			sliderInput("toySimLength", "Simulation time (weeks)", 
 				value=2, min=0, step=1, max=52), div(class="row",
