@@ -11,10 +11,17 @@ source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
 source("../sd/escalation.R")
+source("../sd/toyWars.R")
+source("../sd/cows.R")
+source("../sd/commonGoodShiny-elias.R")
+source("../sd/cowsTragedy.R")
+source("../sd/zombie.R")
+source("../sd/smuggling.R")
 
 shinyServer(function(input,output,session) {
 
-    ############# Bathtub ###################################################
+  
+  ############# Bathtub ###################################################
 
     output$bathtubWaterLevelPlot <- renderPlot({
         if (is.null(input$faucetOnOff)) {
@@ -177,15 +184,15 @@ shinyServer(function(input,output,session) {
     ############## Bats and mice ###########################################
 
     output$batsMiceTimePlot <- renderPlot({
-        sim.results <- bats.mice.sim(
-            bat.birth.rate=input$batBirthRate,
-            bat.death.rate=input$batDeathRate,
-            mouse.birth.rate=input$mouseBirthRate,
-            mouse.death.rate=input$mouseDeathRate,
-            nutrition.factor=input$nutritionFactor,
-            kill.ratio=input$killRatio,
-            sim.length=input$batMouseSimLength)
-        plot.bats.mice.time.plot(sim.results)
+      sim.results <- bats.mice.sim(
+        bat.birth.rate=input$batBirthRate,
+        bat.death.rate=input$batDeathRate,
+        mouse.birth.rate=input$mouseBirthRate,
+        mouse.death.rate=input$mouseDeathRate,
+        nutrition.factor=input$nutritionFactor,
+        kill.ratio=input$killRatio,
+        sim.length=input$batMouseSimLength)
+      plot.bats.mice.time.plot(sim.results)
     })
 
     ################### SIR ################################################
@@ -211,6 +218,92 @@ shinyServer(function(input,output,session) {
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
     })
+  
+  output$zombiePlot <- renderPlot({
+    results <- zombie.sim(
+      dullness.rate = input$dullnessRate, 
+      damage.rate = input$zombieDamageRate,
+      walkers.per.day.wall1 = input$zombiesWall1,
+      kill.rate.wall1 = input$guardOneKillRate,  
+      rebuild.rate.wall1 = input$wallOneRebuildRate,
+      walkers.per.day.wall2 = input$zombiesWall2, 
+      kill.rate.wall2 = input$guardTwoKillRate,  
+      rebuild.rate.wall2 = input$wallTwoRebuildRate, 
+      walkers.per.day.wall3 = input$zombiesWall3,
+      kill.rate.wall3 = input$guardThreeKillRate,  
+      rebuild.rate.wall3 = input$wallThreeRebuildRate, 
+      walkers.per.day.wall4 = input$zombiesWall4,
+      kill.rate.wall4 = input$guardFourKillRate,  
+      rebuild.rate.wall4 = input$wallFourRebuildRate,
+      sim.time = input$simLength)
+    plot.zombie(results)
+    #plot.zombie.kills(results)
+  })
+
+	################### Cows ###########################################
+	output$Plot <- renderPlot({
+		sim.results <- cows.sim(
+			del=input$deltat,
+	      		acow=input$acow,
+	      		bcow=input$bcow,
+			      length=input$time,
+	      		ae=input$Aearnings,
+	      		be=input$Bearnings,
+	      		blade=input$grass,
+	      		cow.eat.rate=input$coweatrate,
+	      		grass.growth.rate=input$grassgrowth,
+	      		cow.cost <- input$cowcost,
+	      		A.reinvestment <- input$a,
+	      		B.reinvestment <- input$b,
+	      		cow.profit <- input$profit,
+	      		blades.per.cow <- input$blades,
+	      		birth=input$birth)
+		plot.cows.sim(sim.results, input$y)
+	})
+
+
+	############################### Toy Wars ###########################################
+    output$toysTimePlot <- renderPlot({
+      	toy.results <- toy.sim(
+        sim.length=input$toySimLength, 
+        brag.rate.child1=input$Child1BragRate,
+        brag.rate.child2=input$Child2BragRate,
+        win.rate.child1=input$Child1WinRate,
+        win.rate.child2=input$Child2WinRate, 
+        allowance=input$childAllowance,
+        cost.of.toy=input$toyCost,
+        child1.start=input$Child1Start,
+        child2.start=input$Child2Start,
+        piggy1.start=input$Child1Piggy,
+        piggy2.start=input$Child2Piggy)
+      plot.toys.time.plot(toy.results)
+    })
+
+    
+    ############ Common Good Email - ELias Ingea ##########################################
+    
+    output$commonGoodPlot <- renderPlot({
+      sim.results <- common.sim(
+        spam.percentage=input$spamPercentage, 
+        regen.rate=input$inflowRate, 
+        rate.of.use=input$outflowRate, 
+        sim.length=input$emailsSimLength)
+      plot.common.good(sim.results)
+    })
+    
+  ##################### Cows Tragedy of THe Commons ########################
+    
+    output$cowsTragedyPlot <- renderPlot({
+      sim.results <- cows.tragedy.sim(
+        sim.length=input$time,
+        farmers=input$farmersOnPasture,
+        init.cows=input$initCowsPerFarmer,
+        init.food=input$startingGrass,
+        grass.growth.rate=input$grassRegrowthRate,
+        decision.ratio=input$sustainabilityDecisionRatio)
+      plot.cows.tragedy.plot(sim.results)
+    })
+
 
     ################# escalation ############################################
     observeEvent(input$runEscalationSim,
@@ -246,4 +339,22 @@ shinyServer(function(input,output,session) {
 
 
 
+    ############## Han Solo Smuggling ###########################################
+    
+    output$plot.contraband.plot <- renderPlot({
+        sim.results <- han.solo.sim(
+          init.patrols=input$initPatrols,
+          init.contraband=input$initContraband,
+          demand=input$demand,
+          encounter.frequency=input$encounterFrequency,
+          sim.length=input$simLength,
+          contract.incentive=input$contractIncentive,
+          smuggle.rate=input$smuggleRate,
+          patrol.rate=input$patrolRate,
+          confiscation.ratio=input$confiscationRatio,
+          desired.shipments=input$desiredShipments
+        )
+        plot.contraband.plot(sim.results)
+    })
+    
 })
