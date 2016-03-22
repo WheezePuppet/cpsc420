@@ -7,7 +7,247 @@ shinyUI(fluidPage(
 
     titlePanel("CPSC 420 -- System Dynamics examples"),
 
-    tabsetPanel(selected="SIR",
+    tabsetPanel(selected="Cows (Hannah)",
+
+	tabPanel("Cows (Hannah)",
+		sidebarLayout(sidebarPanel(
+		  numericInput("deltat", label="Delta T", value=1),
+			numericInput("time", label="Time (days)", value=100),
+			numericInput("acow", label="Farmer A's Inital cows", value=25),
+      numericInput("bcow", label="Farmer B's Inital cows", value=40),
+      numericInput("Aearnings", label="Farmer A's Inital money", value=200),
+      numericInput("Bearnings", label="Farmer B's Inital money", value=200),
+      sliderInput("grass", label="Initial Blades of Grass in the Pasture",
+          		min = 500, max= 3000, value=800),
+      sliderInput("coweatrate", label="Cow Eating Rate (Blade of Grass/Cow/Day)",
+          		min = 0, max= 0.5, value=0.3),
+      sliderInput("grassgrowth", label="Grass Growth Rate (Blade of Grass/Day/Blade of Grass)",            		
+                  min = 0, max= 0.1, value=0.02),
+      sliderInput("a", label="Farmer A Reinvestment (dollars/dollar)",
+              		min = 0, max= 1, value=0.15),
+      sliderInput("b", label="Farmer B Reinvestment (Dollars/Dollar)",
+              		min = 0, max= 1, value=0.15),
+     	numericInput("cowcost", label="Cost per Cow (Dollars)", value=20),
+    	numericInput("profit", label="Profit per Cow (Dollars/Cow/Day)",
+          		value=4),
+      numericInput("blades", label="Blades of Grass Consumed (Blades of Grass/Cow/Day)",
+                		value=8),
+    	selectInput("birth", label="Cow births (Cows/Day)", choices=list("None" = 0,
+                                                            "One" = 1,
+                                                            "Two" = 2,
+                                                            "Three" = 3), selected=2),
+      numericInput("y", label="y-Axis Max", value=1000)
+      
+		),
+      		mainPanel(
+       	 		plotOutput("Plot")
+     		))
+	),
+        tabPanel("Cows (Thomas)",
+                 sidebarLayout(sidebarPanel(
+                   numericInput("time", "Simulation time (weeks)",
+                                value=50, min=0, step=1, width="40%"),
+                   sliderInput("farmersOnPasture", "Farmers using the pasture",
+                               min=1, max=100, step=1, value=10),
+                   sliderInput("initCowsPerFarmer", 
+                               "Initial Cows on pasture (per farmer)",
+                               min=1, max=10, step=1, value=2),
+                   sliderInput("startingGrass", 
+                               "Initial Grass on pasture (1 = 1 cow food week)",
+                               min=100, max=5000, step=10, value=500),
+                   sliderInput("grassRegrowthRate", 
+                               "Rate at which grass grows back",
+                               min=0, max=1, step=.01, value=.2),
+                   sliderInput("sustainabilityDecisionRatio", 
+                               "Sustainability decision ratio for farmers",
+                               min=0, max=5, step=1, value=3)
+                 ),
+                 mainPanel(
+                   plotOutput("cowsTragedyPlot")
+                 ))
+        ),
+
+        tabPanel("ToyWars (Ruth)",
+                sidebarLayout(sidebarPanel(
+       			sliderInput("toySimLength", "Simulation time (weeks)", 
+				value=2, min=0, step=1, max=52), div(class="row",
+                       		div(class="col-lg-6", 
+                        sliderInput("Child1BragRate",
+                                "Child1 Brag Rate",
+                                value=0, min=0, step=.1, max=3)
+                       	),
+                       	div(class="col-lg-6", 
+                           sliderInput("Child2BragRate",
+                                       "Child2 Brag Rate",
+                                       value=0, min=0, step=.1, max=3)
+                       	)
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("Child1WinRate",
+                                       "Child1's desired percentage Above Child2",
+                                       value=0, min=0, step=.1, max=3)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("Child2WinRate",
+                                       "Child2's desired percentage Above Child1",
+                                       value=0, min=0, step=.1, max=3)
+                       )
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("Child1Piggy",
+                                       "Child1 Piggy Bank ($)",
+                                       value=20, min=0, step=1, max=100)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("Child2Piggy",
+                                       "Child2 Piggy Bank ($)",
+                                       value=20, min=0, step=1, max=100)
+                       )
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("Child1Start",
+                                       "Child1 Toys to Start",
+                                       value=10, min=0, step=1, max=100)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("Child2Start",
+                                       "Child2 Toys to Start",
+                                       value=5, min=0, step=1, max=100)
+                       )
+                   ),
+                   sliderInput("childAllowance",
+                               "Allowance ($/week)",
+                               value=10, min=0, step=1, max=50),
+                   sliderInput("toyCost",
+                               "Cost of a Toy ($/toy)",
+                               value=5, min=0, step=1, max=100)
+                 ),
+                 mainPanel(
+                   plotOutput("toysTimePlot")
+                 ))
+        ),
+        tabPanel("Email Common (Elias)", 
+                 sidebarLayout(sidebarPanel(
+                   numericInput("emailsSimLength", "Simulation time (days)", 
+                                value=100, min=0, step=1, width="40%"), 
+                   sliderInput("spamPercentage", "Percent Spam Emails Make up (spam emails/total emails)", 
+                               min=0, max=1, step=0.1, value=0.8), 
+                   sliderInput("inflowRate", "Rate of Non-Spam emails ((email/day)/email)", 
+                               min=0, max=1, step=0.01, value=0.05), 
+                   sliderInput("outflowRate", "Rate of Spam emails ((email/day)/email)", 
+                               min = 0, max=1, step=0.01, val=0.04)), 
+                   mainPanel(
+                     plotOutput("commonGoodPlot")
+                   ))
+        ),
+        
+         tabPanel("Zombie Apocalypse (Brian)",
+           sidebarLayout(sidebarPanel(
+             sliderInput("dullnessRate", 
+                         "Rate at which Blade Dulls (healthPoints/day)",
+                         min=0, max=1, step=.001, value=.003),
+             sliderInput("zombieDamageRate", 
+                         "Zombie Damage Rate (healthPoints/day per Zombie)",
+                         min=0, max=100, step=.1, value=2),
+            
+             sliderInput("zombiesWall1", "Zombies Attacking Wall One",
+                         min=0, max=20, step=1, value=4),
+             sliderInput("guardOneKillRate", 
+                         "Guard One's Kill Rate",
+                         min=0, max=1, step=.1, value=.8),
+             sliderInput("wallOneRebuildRate", 
+                         "Rate at which wall one is rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=3),
+             sliderInput("zombiesWall2", "Zombies Attacking Wall Two",
+                         min=0, max=20, step=1, value=3),
+             sliderInput("guardTwoKillRate", 
+                         "Guard Two's Kill Rate",
+                         min=0, max=1, step=.1, value=.8),
+             sliderInput("wallTwoRebuildRate", 
+                         "Rate at which Wall Two is Rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=2),
+             sliderInput("zombiesWall3", "Zombies Attacking Wall three",
+                         min=0, max=20, step=1, value=4),
+             sliderInput("guardThreeKillRate", 
+                         "Guard Three's Kill Rate",
+                         min=0, max=1, step=.1, value=.8),
+             sliderInput("wallThreeRebuildRate", 
+                         "Rate at which Wall Three is Rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=4),
+             sliderInput("zombiesWall4", "Zombies Attacking Wall four",
+                         min=0, max=20, step=1, value=6),
+             sliderInput("guardFourKillRate", 
+                         "Guard Four's Kill Rate",
+                         min=0, max=1, step=.1, value=.5),
+             sliderInput("wallFourRebuildRate", 
+                         "Rate at which Wall Four is Rebuilt (healthPoint/day)",
+                         min=0, max=50, step=1, value=7),
+             numericInput("simLength", "Simulation time (days)",
+                         value=365*4, min=0, step=1, width="40%")
+           
+           ),
+           mainPanel(
+             plotOutput("zombiePlot")
+           ))
+         ),
+        tabPanel("Intergalactic Smugglers (Alex)",
+                 sidebarLayout(sidebarPanel(
+                   numericInput("simLength", "Simulation time (Galactic Standard Days [GSD])",
+                                value=125, min=1, step=1, width="40%"),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("initPatrols",
+                                       "Initial number of Security Patrols",
+                                       value=1, min=0, step=1, max=100)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("initContraband",
+                                       "Initial Number of Contraband Shipments",
+                                       value=10, min=0, step=1, max=100)
+                       )
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("desiredShipments",
+                                       "The Desired Number of Shipments the Black Market Wants",
+                                       value=10, min=0, step=1, max=100)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("demand",
+                                       "Number of Credits Black Market will Pay per Shipment",
+                                       value=100, min=0, step=100, max=1000)
+                       )
+                   ),
+                   div(class="row",
+                       div(class="col-lg-6", 
+                           sliderInput("smuggleRate",
+                                       "Number of Shipments a Smuggler can Deliver in 1 GSD",
+                                       value=1, min=0, step=.1, max=3)
+                       ),
+                       div(class="col-lg-6", 
+                           sliderInput("patrolRate",
+                                       "Security Level (Patrols / Shipment of Commodity)",
+                                       value=.5, min=0, step=.1, max=5)
+                       )
+                   ),
+                   sliderInput("confiscationRatio",
+                               "Rate at which an Encounter Results in a Confiscation",
+                               value=.75, min=0, step=.01, max=1),
+                   sliderInput("encounterFrequency",
+                               "Encounter Frequency",
+                               value=.25, min=0, step=.01, max=1),
+                   sliderInput("contractIncentive",
+                               "New Smugglers per 1000 Credit Offered",
+                               value=.001, min=0, step=.001, max=.01)
+                 ),
+                 
+                 mainPanel(
+                   plotOutput("plot.contraband.plot")
+                 ))
+        ),
         tabPanel("Bathtub",
             sidebarLayout(sidebarPanel(
                 numericInput("bathtubSimLength", "Simulation time (min)",
@@ -228,194 +468,7 @@ shinyUI(fluidPage(
             mainPanel(
                 plotOutput("sirPlot")
             ))
-        ),
-
-	tabPanel("Cows (Hannah)",
-		sidebarLayout(sidebarPanel(
-		  numericInput("deltat", label="Delta T", value=1),
-			numericInput("time", label="Time (days)", value=100),
-			numericInput("acow", label="Farmer A's Inital cows", value=25),
-      numericInput("bcow", label="Farmer B's Inital cows", value=40),
-      numericInput("Aearnings", label="Farmer A's Inital money", value=200),
-      numericInput("Bearnings", label="Farmer B's Inital money", value=200),
-      sliderInput("grass", label="Initial Blades of Grass in the Pasture",
-          		min = 500, max= 3000, value=800),
-      sliderInput("coweatrate", label="Cow Eating Rate (Blade of Grass/Cow/Day)",
-          		min = 0, max= 0.5, value=0.3),
-      sliderInput("grassgrowth", label="Grass Growth Rate (Blade of Grass/Day/Blade of Grass)",            		
-                  min = 0, max= 0.1, value=0.02),
-      sliderInput("a", label="Farmer A Reinvestment (dollars/dollar)",
-              		min = 0, max= 1, value=0.15),
-      sliderInput("b", label="Farmer B Reinvestment (Dollars/Dollar)",
-              		min = 0, max= 1, value=0.15),
-     	numericInput("cowcost", label="Cost per Cow (Dollars)", value=20),
-    	numericInput("profit", label="Profit per Cow (Dollars/Cow/Day)",
-          		value=4),
-      numericInput("blades", label="Blades of Grass Consumed (Blades of Grass/Cow/Day)",
-                		value=8),
-    	selectInput("birth", label="Cow births (Cows/Day)", choices=list("None" = 0,
-                                                            "One" = 1,
-                                                            "Two" = 2,
-                                                            "Three" = 3), selected=2),
-      numericInput("y", label="y-Axis Max", value=1000)
-      
-		),
-      		mainPanel(
-       	 		plotOutput("Plot")
-     		))
-	),
-        tabPanel("Cows (Thomas)",
-                 sidebarLayout(sidebarPanel(
-                   numericInput("time", "Simulation time (weeks)",
-                                value=50, min=0, step=1, width="40%"),
-                   sliderInput("farmersOnPasture", "Farmers using the pasture",
-                               min=1, max=100, step=1, value=10),
-                   sliderInput("initCowsPerFarmer", 
-                               "Initial Cows on pasture (per farmer)",
-                               min=1, max=10, step=1, value=2),
-                   sliderInput("startingGrass", 
-                               "Initial Grass on pasture (1 = 1 cow food week)",
-                               min=100, max=5000, step=10, value=500),
-                   sliderInput("grassRegrowthRate", 
-                               "Rate at which grass grows back",
-                               min=0, max=1, step=.01, value=.2),
-                   sliderInput("sustainabilityDecisionRatio", 
-                               "Sustainability decision ratio for farmers",
-                               min=0, max=5, step=1, value=3)
-                 ),
-                 mainPanel(
-                   plotOutput("cowsTragedyPlot")
-                 ))
-        ),
-
-        tabPanel("ToyWars (Ruth)",
-                sidebarLayout(sidebarPanel(
-       			sliderInput("toySimLength", "Simulation time (weeks)", 
-				value=2, min=0, step=1, max=52), div(class="row",
-                       		div(class="col-lg-6", 
-                        sliderInput("Child1BragRate",
-                                "Child1 Brag Rate",
-                                value=0, min=0, step=.1, max=3)
-                       	),
-                       	div(class="col-lg-6", 
-                           sliderInput("Child2BragRate",
-                                       "Child2 Brag Rate",
-                                       value=0, min=0, step=.1, max=3)
-                       	)
-                   ),
-                   div(class="row",
-                       div(class="col-lg-6", 
-                           sliderInput("Child1WinRate",
-                                       "Child1's desired percentage Above Child2",
-                                       value=0, min=0, step=.1, max=3)
-                       ),
-                       div(class="col-lg-6", 
-                           sliderInput("Child2WinRate",
-                                       "Child2's desired percentage Above Child1",
-                                       value=0, min=0, step=.1, max=3)
-                       )
-                   ),
-                   div(class="row",
-                       div(class="col-lg-6", 
-                           sliderInput("Child1Piggy",
-                                       "Child1 Piggy Bank ($)",
-                                       value=20, min=0, step=1, max=100)
-                       ),
-                       div(class="col-lg-6", 
-                           sliderInput("Child2Piggy",
-                                       "Child2 Piggy Bank ($)",
-                                       value=20, min=0, step=1, max=100)
-                       )
-                   ),
-                   div(class="row",
-                       div(class="col-lg-6", 
-                           sliderInput("Child1Start",
-                                       "Child1 Toys to Start",
-                                       value=10, min=0, step=1, max=100)
-                       ),
-                       div(class="col-lg-6", 
-                           sliderInput("Child2Start",
-                                       "Child2 Toys to Start",
-                                       value=5, min=0, step=1, max=100)
-                       )
-                   ),
-                   sliderInput("childAllowance",
-                               "Allowance ($/week)",
-                               value=10, min=0, step=1, max=50),
-                   sliderInput("toyCost",
-                               "Cost of a Toy ($/toy)",
-                               value=5, min=0, step=1, max=100)
-                 ),
-                 mainPanel(
-                   plotOutput("toysTimePlot")
-                 ))
-        ),
-        tabPanel("Email Common (Elias)", 
-                 sidebarLayout(sidebarPanel(
-                   numericInput("emailsSimLength", "Simulation time (days)", 
-                                value=100, min=0, step=1, width="40%"), 
-                   sliderInput("spamPercentage", "Percent Spam Emails Make up (spam emails/total emails)", 
-                               min=0, max=1, step=0.1, value=0.8), 
-                   sliderInput("inflowRate", "Rate of Non-Spam emails ((email/day)/email)", 
-                               min=0, max=1, step=0.01, value=0.05), 
-                   sliderInput("outflowRate", "Rate of Spam emails ((email/day)/email)", 
-                               min = 0, max=1, step=0.01, val=0.04)), 
-                   mainPanel(
-                     plotOutput("commonGoodPlot")
-                   ))
-        ),
-        
-         tabPanel("Zombie Apocalypse (Brian)",
-           sidebarLayout(sidebarPanel(
-             sliderInput("dullnessRate", 
-                         "Rate at which Blade Dulls (healthPoints/day)",
-                         min=0, max=1, step=.001, value=.003),
-             sliderInput("zombieDamageRate", 
-                         "Zombie Damage Rate (healthPoints/day per Zombie)",
-                         min=0, max=100, step=.1, value=2),
-            
-             sliderInput("zombiesWall1", "Zombies Attacking Wall One",
-                         min=0, max=20, step=1, value=4),
-             sliderInput("guardOneKillRate", 
-                         "Guard One's Kill Rate",
-                         min=0, max=1, step=.1, value=.8),
-             sliderInput("wallOneRebuildRate", 
-                         "Rate at which wall one is rebuilt (healthPoint/day)",
-                         min=0, max=50, step=1, value=3),
-             sliderInput("zombiesWall2", "Zombies Attacking Wall Two",
-                         min=0, max=20, step=1, value=3),
-             sliderInput("guardTwoKillRate", 
-                         "Guard Two's Kill Rate",
-                         min=0, max=1, step=.1, value=.8),
-             sliderInput("wallTwoRebuildRate", 
-                         "Rate at which Wall Two is Rebuilt (healthPoint/day)",
-                         min=0, max=50, step=1, value=2),
-             sliderInput("zombiesWall3", "Zombies Attacking Wall three",
-                         min=0, max=20, step=1, value=4),
-             sliderInput("guardThreeKillRate", 
-                         "Guard Three's Kill Rate",
-                         min=0, max=1, step=.1, value=.8),
-             sliderInput("wallThreeRebuildRate", 
-                         "Rate at which Wall Three is Rebuilt (healthPoint/day)",
-                         min=0, max=50, step=1, value=4),
-             sliderInput("zombiesWall4", "Zombies Attacking Wall four",
-                         min=0, max=20, step=1, value=6),
-             sliderInput("guardFourKillRate", 
-                         "Guard Four's Kill Rate",
-                         min=0, max=1, step=.1, value=.5),
-             sliderInput("wallFourRebuildRate", 
-                         "Rate at which Wall Four is Rebuilt (healthPoint/day)",
-                         min=0, max=50, step=1, value=7),
-             numericInput("simLength", "Simulation time (days)",
-                         value=365*4, min=0, step=1, width="40%")
-           
-           ),
-           mainPanel(
-             plotOutput("zombiePlot")
-           ))
-         )
+        )
     )
-  
-
 ))
 

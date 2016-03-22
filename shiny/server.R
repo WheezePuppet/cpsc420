@@ -15,6 +15,7 @@ source("../sd/cows.R")
 source("../sd/commonGoodShiny-elias.R")
 source("../sd/cowsTragedy.R")
 source("../sd/zombie.R")
+source("../sd/smuggling.R")
 
 shinyServer(function(input,output,session) {
 
@@ -301,4 +302,24 @@ shinyServer(function(input,output,session) {
         decision.ratio=input$sustainabilityDecisionRatio)
       plot.cows.tragedy.plot(sim.results)
     })
+
+
+    ############## Han Solo Smuggling ###########################################
+    
+    output$plot.contraband.plot <- renderPlot({
+        sim.results <- han.solo.sim(
+          init.patrols=input$initPatrols,
+          init.contraband=input$initContraband,
+          demand=input$demand,
+          encounter.frequency=input$encounterFrequency,
+          sim.length=input$simLength,
+          contract.incentive=input$contractIncentive,
+          smuggle.rate=input$smuggleRate,
+          patrol.rate=input$patrolRate,
+          confiscation.ratio=input$confiscationRatio,
+          desired.shipments=input$desiredShipments
+        )
+        plot.contraband.plot(sim.results)
+    })
+    
 })
