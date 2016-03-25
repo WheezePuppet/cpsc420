@@ -17,6 +17,7 @@ source("../sd/commonGoodShiny-elias.R")
 source("../sd/cowsTragedy.R")
 source("../sd/zombie.R")
 source("../sd/smuggling.R")
+source("../sd/TofCommons.R")
 
 shinyServer(function(input,output,session) {
 
@@ -355,6 +356,24 @@ shinyServer(function(input,output,session) {
           desired.shipments=input$desiredShipments
         )
         plot.contraband.plot(sim.results)
+    })
+
+
+    ############## Population and Tragedy of Commons #############################
+
+    output$population.plot <- renderPlot({
+      sim.results <- tOfCommons.sim(
+        init.population=(as.numeric(input$val)), 
+        init.resources=(as.numeric(input$val2)),
+        init.new.resources=(as.numeric(input$val3)),
+        birth.rate=(as.numeric(input$val4)),
+        death.rate=(as.numeric(input$val5)),
+        year.new.resources=(as.numeric(input$val6)),
+        year.start=(as.numeric(input$valS)),
+        year.end=(as.numeric(input$valE)),
+        regulation.rate.R=(as.numeric(input$val2R)),
+        regulation.rate.N=(as.numeric(input$val3R)))
+      plot.TOfCommons.sim(sim.results)
     })
     
 })

@@ -248,6 +248,37 @@ shinyUI(fluidPage(
                    plotOutput("plot.contraband.plot")
                  ))
         ),
+        tabPanel("Population (Michael P)",
+            sidebarLayout(sidebarPanel(
+              h3("Controls:"),
+      
+              sliderInput("valS", label=h4("Starting Year:"), 
+                min=1900, max=2000, value=2000),
+              sliderInput("valE", label=h4("Ending Year:"), 
+                min=2100, max=3000, value=2400),
+              sliderInput("val", label=h4("Initial Population:"), 
+                min=1e9, max=10e9, step=1e9, value=3e9),
+              sliderInput("val2", label=h4("Initial Resources for Survival:"), 
+                min=1e9, max=30e9, value=10e9),
+              sliderInput("val2R", label=h4("Rate of Initial Regulation:"), 
+                min=0, max=.05, value=0),
+              sliderInput("val3", label=h4("New Resources for Survival:"), 
+                min=1e9, max=30e9, value=25e9),
+              sliderInput("val3R", label=h4("Rate of New Regulation:"), 
+                min=0, max=.05, value=.045),
+              sliderInput("val4", label=h4("Birth Rate:"), 
+                min=.01, max=.07, step=.01, value=.04),
+              sliderInput("val5", label=h4("Death Rate:"), 
+                min=.01, max=.07, step=.01, value=.02),
+              sliderInput("val6", label=h4("Amount of Years till New Resource Found:"), 
+                min=1, max=1000, value=100)
+            ),
+    
+            # Show a plot of the generated distribution
+            mainPanel(
+              plotOutput("population.plot",width="100%",height="600px")
+            ))
+        ),
         tabPanel("Bathtub",
             sidebarLayout(sidebarPanel(
                 numericInput("bathtubSimLength", "Simulation time (min)",
