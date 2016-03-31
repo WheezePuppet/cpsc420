@@ -252,4 +252,21 @@ shinyServer(function(input,output,session) {
       plot.toys.time.plot(toy.results)
     })
 
+    ############## Han Solo Smuggling ###########################################
+    
+    output$plot.contraband.plot <- renderPlot({
+        sim.results <- han.solo.sim(
+          init.patrols=input$initPatrols,
+          init.contraband=input$initContraband,
+          demand=input$demand,
+          encounter.frequency=input$encounterFrequency,
+          sim.length=input$simLength,
+          contract.incentive=input$contractIncentive,
+          smuggle.rate=input$smuggleRate,
+          patrol.rate=input$patrolRate,
+          confiscation.ratio=input$confiscationRatio,
+          desired.shipments=input$desiredShipments
+        )
+        plot.contraband.plot(sim.results)
+    })
 })
