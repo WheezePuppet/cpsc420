@@ -7,7 +7,7 @@ probBlue <- .42
 
 # What fraction of my neighbors (minimum) must look like me in order for me to
 # not to move?
-thresh <- 0
+thresh <- .40
 
 RED <- 1
 BLUE <- 2
@@ -66,7 +66,7 @@ computeRatio <- function(mycolor, city, row, col) {
     return(ratio)
 }
 
-belowThresh <- function(mycolor, city, row, col) {
+belowThresh <- function(mycolor, city, row, col, thresh) {
 
     ratio <- computeRatio(mycolor, city, row, col)
     if (ratio < thresh) {
@@ -135,7 +135,7 @@ for (gen in 2:numGen) {
         for (col in seq(width)) {
             curr.val <- city[row,col,gen-1]
             if(curr.val != EMPTY  &&  
-                    belowThresh(curr.val, city[,,gen-1],row,col)) {
+                    belowThresh(curr.val, city[,,gen-1],row,col,thresh)) {
                 city[row,col,gen] <- EMPTY
                 randEmpty <- findRandomEmpty(city[,,gen])
                 city[randEmpty[1],randEmpty[2],gen] <- curr.val
