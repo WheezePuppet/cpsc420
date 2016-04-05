@@ -111,6 +111,17 @@ computeAvgRatio <- function(city) {
 }
 
 
+plot.gen <- function(city,gen) {
+    reds <- pointsForGrid(city[,,gen-1],RED)
+    plot(reds[[1]],reds[[2]],pch=16,col="red",
+        xlim=c(0,width+1),ylim=c(0,height+1),main=paste("Generation",gen),
+        xlab="",ylab="")
+    blues <- pointsForGrid(city[,,gen-1],BLUE)
+    points(blues[[1]],blues[[2]],pch=16,col="blue",
+        xlim=c(0,width+1),ylim=c(0,height+1))
+}
+
+
 # Main simulation.
 starter <- runif(width * height)
 config <- matrix(ifelse(starter < probRed, RED, 
@@ -120,15 +131,11 @@ config <- matrix(ifelse(starter < probRed, RED,
 city <- array(dim=c(width,height,numGen))
 city[,,1] <- config
 
+
 for (gen in 2:numGen) {
-    reds <- pointsForGrid(city[,,gen-1],RED)
-    plot(reds[[1]],reds[[2]],pch=16,col="red",
-        xlim=c(0,width+1),ylim=c(0,height+1),main=paste("Generation",gen),
-        xlab="",ylab="")
-    blues <- pointsForGrid(city[,,gen-1],BLUE)
-    points(blues[[1]],blues[[2]],pch=16,col="blue",
-        xlim=c(0,width+1),ylim=c(0,height+1))
     
+    plot.gen(city,gen)
+
     city[,,gen] <- city[,,gen-1]
 
     for (row in seq(height)) {
@@ -142,6 +149,7 @@ for (gen in 2:numGen) {
             }
         }
     }
+
 }
 
 cat("The average ratio is ", 
