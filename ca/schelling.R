@@ -15,14 +15,8 @@ EMPTY <- 3
 
 width <- 60
 height <- 60
-starter <- runif(width * height)
-config <- matrix(ifelse(starter < probRed, RED, 
-    ifelse(starter < probRed + probBlue, BLUE,
-    EMPTY)),nrow=height)
-
 numGen <- 40
-city <- array(dim=c(width,height,numGen))
-city[,,1] <- config
+
 
 numNeighborsOfColor <- function(city, row, col, color) {
     num <- 0
@@ -118,6 +112,14 @@ computeAvgRatio <- function(city) {
 
 
 # Main simulation.
+starter <- runif(width * height)
+config <- matrix(ifelse(starter < probRed, RED, 
+    ifelse(starter < probRed + probBlue, BLUE,
+    EMPTY)),nrow=height)
+
+city <- array(dim=c(width,height,numGen))
+city[,,1] <- config
+
 for (gen in 2:numGen) {
     reds <- pointsForGrid(city[,,gen-1],RED)
     plot(reds[[1]],reds[[2]],pch=16,col="red",
