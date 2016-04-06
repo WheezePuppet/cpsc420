@@ -5,9 +5,9 @@
 probRed <- .42
 probBlue <- .42
 
-# What fraction of my neighbors (minimum) must look like me in order for me to
+# What fraction of my neighbors (minimum) must look like me in order for me
 # not to move?
-thresh <- .40
+thresh <- .4
 
 RED <- 1
 BLUE <- 2
@@ -113,11 +113,11 @@ computeAvgRatio <- function(city) {
 
 plot.gen <- function(city,gen) {
     reds <- pointsForGrid(city[,,gen-1],RED)
-    plot(reds[[1]],reds[[2]],pch=16,col="red",
+    plot(reds[[1]],reds[[2]],pch=19,col="red",
         xlim=c(0,width+1),ylim=c(0,height+1),main=paste("Generation",gen),
         xlab="",ylab="")
     blues <- pointsForGrid(city[,,gen-1],BLUE)
-    points(blues[[1]],blues[[2]],pch=16,col="blue",
+    points(blues[[1]],blues[[2]],pch=19,col="blue",
         xlim=c(0,width+1),ylim=c(0,height+1))
 }
 
