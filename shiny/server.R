@@ -10,12 +10,19 @@ source("../sd/cpscStudents.R")
 source("../sd/reinvestment.R")
 source("../sd/batsMice.R")
 source("../sd/SIR.R")
+source("../sd/escalation.R")
 source("../sd/toyWars.R")
 source("../sd/cows.R")
+source("../sd/commonGoodShiny-elias.R")
+source("../sd/cowsTragedy.R")
+source("../sd/zombie.R")
+source("../sd/smuggling.R")
+source("../sd/TofCommons.R")
 
 shinyServer(function(input,output,session) {
 
-    ############# Bathtub ###################################################
+  
+  ############# Bathtub ###################################################
 
     output$bathtubWaterLevelPlot <- renderPlot({
         if (is.null(input$faucetOnOff)) {
@@ -212,17 +219,38 @@ shinyServer(function(input,output,session) {
             "Basic Reproductive Number: <span style=\"color:", R0.color,
                 ";font-weight:bold;\">", round(R0,2), "</span></div>")
     })
+  
+  output$zombiePlot <- renderPlot({
+    results <- zombie.sim(
+      dullness.rate = input$dullnessRate, 
+      damage.rate = input$zombieDamageRate,
+      walkers.per.day.wall1 = input$zombiesWall1,
+      kill.rate.wall1 = input$guardOneKillRate,  
+      rebuild.rate.wall1 = input$wallOneRebuildRate,
+      walkers.per.day.wall2 = input$zombiesWall2, 
+      kill.rate.wall2 = input$guardTwoKillRate,  
+      rebuild.rate.wall2 = input$wallTwoRebuildRate, 
+      walkers.per.day.wall3 = input$zombiesWall3,
+      kill.rate.wall3 = input$guardThreeKillRate,  
+      rebuild.rate.wall3 = input$wallThreeRebuildRate, 
+      walkers.per.day.wall4 = input$zombiesWall4,
+      kill.rate.wall4 = input$guardFourKillRate,  
+      rebuild.rate.wall4 = input$wallFourRebuildRate,
+      sim.time = input$simLength)
+    plot.zombie(results)
+    #plot.zombie.kills(results)
+  })
 
 	################### Cows ###########################################
 	output$Plot <- renderPlot({
 		sim.results <- cows.sim(
 			del=input$deltat,
-	      		acow=input$Acow,
-	      		bcow=input$Bcow,
-			time=input$time,
+	      		acow=input$acow,
+	      		bcow=input$bcow,
+			      length=input$time,
 	      		ae=input$Aearnings,
 	      		be=input$Bearnings,
-	      		gras=input$grass,
+	      		blade=input$grass,
 	      		cow.eat.rate=input$coweatrate,
 	      		grass.growth.rate=input$grassgrowth,
 	      		cow.cost <- input$cowcost,
@@ -231,7 +259,7 @@ shinyServer(function(input,output,session) {
 	      		cow.profit <- input$profit,
 	      		blades.per.cow <- input$blades,
 	      		birth=input$birth)
-		plot.cows.sim(sim.results)
+		plot.cows.sim(sim.results, input$y)
 	})
 
 
@@ -252,6 +280,66 @@ shinyServer(function(input,output,session) {
       plot.toys.time.plot(toy.results)
     })
 
+    
+    ############ Common Good Email - ELias Ingea ##########################################
+    
+    output$commonGoodPlot <- renderPlot({
+      sim.results <- common.sim(
+        spam.percentage=input$spamPercentage, 
+        regen.rate=input$inflowRate, 
+        rate.of.use=input$outflowRate, 
+        sim.length=input$emailsSimLength)
+      plot.common.good(sim.results)
+    })
+    
+  ##################### Cows Tragedy of THe Commons ########################
+    
+    output$cowsTragedyPlot <- renderPlot({
+      sim.results <- cows.tragedy.sim(
+        sim.length=input$time,
+        farmers=input$farmersOnPasture,
+        init.cows=input$initCowsPerFarmer,
+        init.food=input$startingGrass,
+        grass.growth.rate=input$grassRegrowthRate,
+        decision.ratio=input$sustainabilityDecisionRatio)
+      plot.cows.tragedy.plot(sim.results)
+    })
+
+
+    ################# escalation ############################################
+    observeEvent(input$runEscalationSim,
+        {
+            prev.escalation.results <<- NULL
+            output$escalationPlot <- renderPlot({
+                run.and.plot.escalation()
+            })
+        })
+
+        observeEvent(input$contEscalationSim,
+        {
+            output$escalationPlot <- renderPlot({
+                run.and.plot.escalation()
+            })
+        })
+
+        run.and.plot.escalation <- function() {
+            isolate({
+                prev.escalation.results <<- 
+                    escalation.sim(usa.perception.bias=input$usaPerceptionBias,
+                        ussr.perception.bias=input$ussrPerceptionBias,
+                        usa.desired.advantage=input$usaDesiredAdvantage,
+                        ussr.desired.advantage=input$ussrDesiredAdvantage,
+                        usa.correction.period=input$usaCorrectionPeriod,
+                        ussr.correction.period=input$ussrCorrectionPeriod,
+                        sim.length=input$escalationLength,
+                        prev.results=prev.escalation.results)
+                plot.escalation(prev.escalation.results)
+            })
+    }
+
+
+
+
     ############## Han Solo Smuggling ###########################################
     
     output$plot.contraband.plot <- renderPlot({
@@ -269,4 +357,23 @@ shinyServer(function(input,output,session) {
         )
         plot.contraband.plot(sim.results)
     })
+
+
+    ############## Population and Tragedy of Commons #############################
+
+    output$population.plot <- renderPlot({
+      sim.results <- tOfCommons.sim(
+        init.population=(as.numeric(input$val)), 
+        init.resources=(as.numeric(input$val2)),
+        init.new.resources=(as.numeric(input$val3)),
+        birth.rate=(as.numeric(input$val4)),
+        death.rate=(as.numeric(input$val5)),
+        year.new.resources=(as.numeric(input$val6)),
+        year.start=(as.numeric(input$valS)),
+        year.end=(as.numeric(input$valE)),
+        regulation.rate.R=(as.numeric(input$val2R)),
+        regulation.rate.N=(as.numeric(input$val3R)))
+      plot.TOfCommons.sim(sim.results)
+    })
+    
 })
