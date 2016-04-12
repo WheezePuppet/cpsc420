@@ -32,6 +32,9 @@ numNeighborsOfColor <- function(city, row, col, color) {
     if (row < height && city[row+1,col] == color) {
         num <- num + 1
     }
+    if (row > 1 && city[row-1,col] == color) {
+        num <- num + 1
+    }
     if (row < height && col < width && city[row+1,col+1] == color) {
         num <- num + 1
     }
