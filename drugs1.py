@@ -35,7 +35,7 @@ for i in range(1, len(time_values)):
     D[i] = D[i-1] + D_prime * delta_t
 
     # If it's time to pop another pill, do so, by just adding to the stock.
-    if i*delta_t in np.arange(0,simulation_hrs,dosage_freq):
+    if i in np.arange(0,len(time_values),int(dosage_freq/delta_t)):
         D[i] += dosage
         
 
