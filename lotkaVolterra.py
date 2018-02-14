@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 delta_t = 1/30/24               # months (1 hour)
-t = np.arange(0,12*30,delta_t)   # months (3 years)
+t = np.arange(0,12*3,delta_t)   # months (3 years)
 
 bat_birth_factor = 2     # (bats/month)/bat
 bat_death_factor = 3     # (bats/month)/bat
