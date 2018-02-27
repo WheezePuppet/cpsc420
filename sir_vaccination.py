@@ -1,5 +1,5 @@
 
-# SIR epidemiology model version 1: runaway epidemic
+# SIR epidemiology model version 2: pre-epidemic vaccinations
 # Stephen Davies -- CPSC 420
 
 import matplotlib.pyplot as plt
@@ -61,17 +61,26 @@ def runsim(mean_infectious_duration = 5,             # days
 vacc_fracs = np.arange(0,1,.01)
 perc_infs = []
 
+mean_infectious_duration = 7
+transmissibility = .3
+contact_factor = 2
+
 for vf in vacc_fracs:
-    perc_inf = runsim(mean_infectious_duration=10,transmissibility=.4,vacc_frac=vf,plot=False)
+    perc_inf = runsim(mean_infectious_duration=mean_infectious_duration,
+        transmissibility=transmissibility,
+        contact_factor=contact_factor,
+        vacc_frac=vf,
+        plot=False)
     perc_infs.append(perc_inf)
 
-R0 = 10 * .4 * 2
+R0 = mean_infectious_duration * transmissibility * contact_factor
 threshold = 1 - 1/R0
 plt.plot(vacc_fracs, perc_infs, color="purple", label="% infected")
 plt.xlabel("fraction vaccinated")
 plt.ylabel("% ever infected")
 plt.axvline(x=threshold, linestyle=":")
-plt.title("$R_0$ = " + str(round(R0,2)) + "\nbetter vaccinate at least " +
-    str(round(threshold,2)*100) + "%")
+plt.title("$R_0$ = " + str(round(R0,2)) +
+    "\n...you'd better vaccinate at least " +
+    str(round(threshold,2)*100) + "%!")
 plt.legend()
 plt.show()
