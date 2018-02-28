@@ -8,7 +8,6 @@ import numpy as np
 def runsim(mean_infectious_duration = 5,             # days
     transmissibility = .2,                           # infections/contact
     contact_factor = 2,                              # (contacts/day)/person
-    vacc_frac = .5,                                  # vacc/susceptible
     plot = True):
 
     recovery_factor = 1/mean_infectious_duration    # 1/day
@@ -24,14 +23,10 @@ def runsim(mean_infectious_duration = 5,             # days
     I[0] = 1
     R[0] = 0
 
-    # vaccinate people all at once.
-    V = vacc_frac * S[0]
-    S[0] = S[0] * (1 - vacc_frac)
-
     for i in range(1,len(time_values)):
 
         # Flows.
-        frac_susceptible =  S[i-1]/(S[0]+V+I[0]+R[0])      # unitless
+        frac_susceptible =  S[i-1]/(S[0]+I[0]+R[0])      # unitless
         SI_contact_rate = frac_susceptible * I[i-1] * contact_factor # contacts/day
         infection_rate = SI_contact_rate * transmissibility # infections/day
         recovery_rate = I[i-1] * recovery_factor  # recoveries/day
@@ -50,28 +45,21 @@ def runsim(mean_infectious_duration = 5,             # days
         plt.plot(time_values,S,color="blue",label="S")
         plt.plot(time_values,I,color="red",label="I")
         plt.plot(time_values,R,color="green",label="R")
-        plt.plot(time_values,np.repeat(V,len(time_values)),
-            color="orange",label="V")
         plt.legend()
         plt.show()
 
     return (I[len(I)-1] + R[len(R)-1])/total_pop*100
 
 
-vacc_fracs = np.arange(0,1,.01)
+mids = np.arange(.1,10,.1)
 perc_infs = []
 
-for vf in vacc_fracs:
-    perc_inf = runsim(mean_infectious_duration=10,transmissibility=.4,vacc_frac=vf,plot=False)
+for mid in mids:
+    perc_inf = runsim(mean_infectious_duration=mid,plot=False)
     perc_infs.append(perc_inf)
 
-R0 = 10 * .4 * 2
-threshold = 1 - 1/R0
-plt.plot(vacc_fracs, perc_infs, color="purple", label="% infected")
-plt.xlabel("fraction vaccinated")
+plt.plot(mids, perc_infs, color="purple", label="% infected")
+plt.xlabel("mean infected duration (days)")
 plt.ylabel("% ever infected")
-plt.axvline(x=threshold, linestyle=":")
-plt.title("$R_0$ = " + str(round(R0,2)) + "\nbetter vaccinate at least " +
-    str(round(threshold,2)*100) + "%")
 plt.legend()
 plt.show()
