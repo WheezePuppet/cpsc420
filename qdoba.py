@@ -16,7 +16,7 @@ num_in_line = 0
 
 # Average rates of service and arrival, in burritos/min and customers/min.
 SERVICE_RATE = 4        # per-min
-INTERARRIVAL_RATE = 3   # per-min
+INTERARRIVAL_RATE = 3.5   # per-min
 
 # Event list. Start off with one scheduled arrival, and no scheduled service 
 # events.
@@ -28,6 +28,8 @@ QUITTIN_TIME = 10*60
 
 # Statistical counter to track how long the line ever gets.
 max_line_size = 0
+total_line_area_or_weight_before_division = 0
+total_utilization = 0
 
 # Coordinates of points for line-size plot. Each change in line size will
 # result in *two* points added to these lists, one for each 90-degree "corner"
@@ -41,6 +43,7 @@ ys = [0]
 while next_arrival < np.inf or next_service < np.inf:
 
     # Advance the simulation clock to the time of the next scheduled event.
+    prev_clock = clock
     clock = min(next_arrival, next_service)
 
     if next_arrival < next_service:
@@ -54,6 +57,8 @@ while next_arrival < np.inf or next_service < np.inf:
         else:
             xs.append(clock)
             ys.append(num_in_line)
+            total_line_area_or_weight_before_division += \
+                num_in_line * (clock - prev_clock)
             num_in_line += 1
             xs.append(clock)
             ys.append(num_in_line)
@@ -78,6 +83,8 @@ while next_arrival < np.inf or next_service < np.inf:
             state = BUSY    # (not strictly necessary; defensive programming)
             xs.append(clock)
             ys.append(num_in_line)
+            total_line_area_or_weight_before_division += \
+                num_in_line * (clock - prev_clock)
             num_in_line -=1
             xs.append(clock)
             ys.append(num_in_line)
@@ -92,8 +99,16 @@ while next_arrival < np.inf or next_service < np.inf:
 
 
 
+avg_line_size = total_line_area_or_weight_before_division / clock
 
 plt.clf()
-plt.title("The line got up to " + str(max_line_size))
+plt.title(("The line got up to {}\nExpected line size: {:.2f}").format(
+    max_line_size,avg_line_size))
 plt.plot(xs,ys)
+plt.xlabel("minutes since opening")
+plt.ylabel("# customers in line")
+plt.annotate("Quittin' time",(QUITTIN_TIME-20,max_line_size*.9),color="purple",
+    rotation=90)
+plt.axhline(avg_line_size,color="red")
+plt.axvline(QUITTIN_TIME,color="purple",linestyle="dotted")
 plt.show()
